@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臺灣用電大戶 BESS 業務推廣套件</title>
+<style>
+:root {
+  --primary:#1e40af;--primary-light:#dbeafe;--primary-dark:#1e3a8a;
+  --green:#065f46;--green-light:#d1fae5;
+  --amber:#d97706;--amber-light:#fef3c7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f1f5f9;--card:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;font-size:15px;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:#fff;padding:1.25rem 2rem;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.hdr h1{font-size:1.3rem;font-weight:800;}
+.hdr p{font-size:.8rem;opacity:.75;margin-top:.2rem;}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:70px;z-index:90;overflow-x:auto;}
+.nav-inner{display:flex;padding:0 1.5rem;min-width:max-content;}
+.nav-btn{padding:.75rem 1.1rem;cursor:pointer;border:none;background:none;
+  border-bottom:3px solid transparent;font-weight:600;font-size:.875rem;color:var(--muted);
+  white-space:nowrap;transition:all .2s;font-family:inherit;}
+.nav-btn:hover{color:var(--primary);}
+.nav-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+
+/* CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:1.75rem 1.5rem;}
+.tab{display:none;}.tab.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;
+  border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.card-title{font-size:1.15rem;font-weight:800;color:var(--primary);margin-bottom:1rem;
+  padding-bottom:.6rem;border-bottom:2px solid var(--primary-light);}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:.875rem;}
+th{background:var(--primary);color:#fff;padding:.55rem .85rem;text-align:left;font-weight:700;}
+td{padding:.55rem .85rem;border-bottom:1px solid var(--border);}
+tr:nth-child(even) td{background:#f8fafc;}
+tr:hover td{background:var(--primary-light);}
+
+/* BADGES */
+.badge{display:inline-block;padding:.15rem .55rem;border-radius:9999px;font-size:.75rem;font-weight:700;}
+.bg{background:var(--green-light);color:var(--green);}
+.bw{background:var(--amber-light);color:var(--amber);}
+.bd{background:var(--red-light);color:var(--red);}
+.bp{background:var(--primary-light);color:var(--primary);}
+
+/* INFO BOXES */
+.box{padding:.9rem 1.1rem;border-radius:8px;margin:.9rem 0;border-left:4px solid;}
+.box-tip{background:var(--green-light);border-color:var(--green);}
+.box-warn{background:var(--amber-light);border-color:var(--amber);}
+.box-info{background:var(--primary-light);border-color:var(--primary);}
+.box-danger{background:var(--red-light);border-color:var(--red);}
+
+/* VALUE STACK */
+.vstack{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0;}
+.vitem{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1rem;}
+.vitem .vlabel{font-size:.75rem;color:var(--muted);}
+.vitem .vamt{font-size:1.4rem;font-weight:800;color:var(--primary);}
+.vitem .vcert{font-size:.75rem;margin-top:.2rem;}
+
+/* SOLUTION CARDS */
+.sol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem;}
+.sol-card{border-radius:12px;padding:1.5rem;border:2px solid;}
+.sol-s{border-color:#3b82f6;background:#eff6ff;}
+.sol-m{border-color:#10b981;background:#ecfdf5;}
+.sol-l{border-color:#f59e0b;background:#fffbeb;}
+.sol-card h3{font-size:1.05rem;font-weight:800;margin-bottom:.75rem;}
+.sol-card .big{font-size:1.75rem;font-weight:900;margin:.4rem 0;}
+.sol-s .big{color:#1d4ed8;}.sol-m .big{color:#059669;}.sol-l .big{color:#d97706;}
+.sol-card ul{list-style:none;font-size:.85rem;margin-top:.75rem;}
+.sol-card ul li{padding:.2rem 0;padding-left:1rem;position:relative;}
+.sol-card ul li::before{content:"✓";position:absolute;left:0;color:var(--green);}
+.sol-tag{display:inline-block;padding:.2rem .7rem;border-radius:6px;font-size:.75rem;font-weight:700;margin-bottom:.5rem;}
+.sol-s .sol-tag{background:#bfdbfe;color:#1e40af;}
+.sol-m .sol-tag{background:#a7f3d0;color:#065f46;}
+.sol-l .sol-tag{background:#fde68a;color:#92400e;}
+
+/* SPEECH */
+.speech{background:var(--bg);border-left:4px solid var(--primary);padding:.9rem 1.1rem;
+  border-radius:0 8px 8px 0;margin:.75rem 0;font-size:.875rem;}
+.speech .spk{font-size:.75rem;font-weight:800;color:var(--primary);margin-bottom:.4rem;}
+
+/* FAQ */
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:.6rem;overflow:hidden;}
+.faq-q{padding:.9rem 1.1rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;background:#fff;transition:background .15s;font-size:.9rem;}
+.faq-q:hover{background:var(--bg);}
+.faq-q.open{color:var(--primary);background:var(--primary-light);}
+.faq-a{padding:0 1.1rem;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;background:#fff;font-size:.875rem;color:var(--muted);}
+.faq-a.open{max-height:400px;padding:.9rem 1.1rem;}
+
+/* FORM */
+.form-sec{background:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem;border:1px solid var(--border);}
+.form-sec-title{font-size:1rem;font-weight:800;color:var(--primary);margin-bottom:1rem;
+  display:flex;align-items:center;gap:.5rem;}
+.form-sec-title .num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:.35rem;}
+.fg label{font-size:.825rem;font-weight:700;color:var(--text);}
+.fg input,.fg select,.fg textarea{padding:.55rem .85rem;border:1px solid var(--border);border-radius:8px;
+  font-size:.875rem;font-family:inherit;color:var(--text);transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);}
+.fg textarea{resize:vertical;min-height:80px;}
+
+/* CHECKBOXES */
+.cl-group{margin-bottom:1.25rem;}
+.cl-group h4{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--muted);margin-bottom:.6rem;}
+.cl-item{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem .75rem;border-radius:8px;
+  cursor:pointer;transition:background .1s;margin-bottom:.25rem;}
+.cl-item:hover{background:var(--bg);}
+.cl-item input[type=checkbox]{width:17px;height:17px;margin-top:2px;cursor:pointer;accent-color:var(--primary);flex-shrink:0;}
+.cl-item .itxt{font-size:.875rem;line-height:1.5;}
+.cl-item.done .itxt{color:var(--muted);text-decoration:line-through;}
+
+/* PROGRESS */
+.prog-wrap{margin:.75rem 0;}
+.prog-bar{height:7px;background:var(--border);border-radius:9999px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--green));border-radius:9999px;transition:width .3s;}
+.prog-label{font-size:.75rem;color:var(--muted);margin-top:.3rem;text-align:right;}
+
+/* CALCULATOR */
+.calc-box{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;
+  border-radius:12px;padding:1.5rem;margin:1rem 0;}
+.calc-box h3{color:#fff;font-size:1rem;margin-bottom:1rem;opacity:.9;}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;}
+.calc-item{text-align:center;}
+.calc-item .cl{font-size:.7rem;opacity:.75;}
+.calc-item .cv{font-size:1.5rem;font-weight:900;margin-top:.2rem;}
+.calc-item .cs{font-size:.7rem;opacity:.7;}
+
+/* SCENARIO CARDS */
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0;}
+.sc-card{border:2px solid var(--border);border-radius:10px;padding:1.1rem;text-align:center;}
+.sc-card.rec{border-color:var(--primary);background:var(--primary-light);}
+.sc-card h4{font-size:.8rem;color:var(--muted);margin-bottom:.4rem;}
+.sc-card .sn{font-size:1.8rem;font-weight:900;color:var(--primary);}
+.sc-card .ss{font-size:.75rem;color:var(--muted);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:8px;
+  font-size:.875rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:inherit;}
+.btn-p{background:var(--primary);color:#fff;}
+.btn-p:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.btn-g{background:var(--green);color:#fff;}
+.btn-g:hover{background:#047857;transform:translateY(-1px);}
+.btn-a{background:var(--amber);color:#fff;}
+.btn-a:hover{background:#b45309;transform:translateY(-1px);}
+.btn-o{background:transparent;color:var(--primary);border:2px solid var(--primary);}
+.btn-o:hover{background:var(--primary-light);}
+.btn-group{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;}
+
+/* MODAL / PRINT OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+  padding:2rem;overflow-y:auto;}
+.overlay.open{display:flex;justify-content:center;align-items:flex-start;}
+.doc{background:#fff;max-width:820px;width:100%;border-radius:12px;padding:2.5rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.doc-ctrl{display:flex;justify-content:flex-end;gap:.6rem;margin-bottom:1.25rem;}
+
+/* PRINT REPORT STYLES */
+.rpt-header{border-bottom:3px solid var(--primary);padding-bottom:1rem;margin-bottom:1.5rem;}
+.rpt-header h2{font-size:1.4rem;font-weight:900;color:var(--primary);}
+.rpt-header p{font-size:.85rem;color:var(--muted);}
+.rpt-section{margin-bottom:1.5rem;}
+.rpt-section h3{font-size:1rem;font-weight:800;color:var(--primary);margin-bottom:.75rem;
+  padding:.4rem .75rem;background:var(--primary-light);border-radius:6px;}
+.rpt-row{display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.875rem;}
+.rpt-row .rk{color:var(--muted);font-weight:600;}
+.rpt-row .rv{font-weight:700;}
+.fin-highlight{background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;border-radius:10px;padding:1.25rem;margin:1rem 0;}
+.fin-highlight h3{color:#fff;margin-bottom:.75rem;font-size:.95rem;}
+.fin-row{display:flex;justify-content:space-between;padding:.3rem 0;font-size:.875rem;border-bottom:1px solid rgba(255,255,255,.2);}
+.fin-row .fk{opacity:.8;}
+.fin-row .fv{font-weight:800;}
+.sig-area{margin-top:2rem;display:flex;gap:3rem;}
+.sig-box{flex:1;border-top:1px solid var(--border);padding-top:.5rem;font-size:.8rem;color:var(--muted);}
+
+/* PRINT MEDIA */
+@media print {
+  .hdr,.nav,.btn-group,.doc-ctrl,.overlay-noPrint{display:none!important;}
+  .overlay{position:static;background:none;padding:0;display:block!important;}
+  .doc{box-shadow:none;padding:0;border-radius:0;}
+  body{background:#fff;}
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .content{padding:1rem;}
+  .sc-grid{grid-template-columns:1fr;}
+  .hdr h1{font-size:1.1rem;}
+}
+
+/* MISC */
+.icon{display:inline-block;margin-right:.3rem;}
+.txt-m{color:var(--muted);font-size:.875rem;}
+.txt-sm{font-size:.8rem;}
+.mt1{margin-top:.5rem;}.mt2{margin-top:1rem;}.mt3{margin-top:1.5rem;}
+.fw7{font-weight:700;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.grid2{grid-template-columns:1fr;}}
+.divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1>⚡ 臺灣用電大戶表後儲能 (BESS) 業務推廣套件</h1>
+  <p>適用對象：契約容量 5,000 kW 以上企業 ｜ 資料基準：台電 114/10/1 電價表 ｜ v1.0 ｜ 2026 年 6 月</p>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showTab('t1',this)">📊 市場與法規</button>
+    <button class="nav-btn" onclick="showTab('t2',this)">💰 財務模型</button>
+    <button class="nav-btn" onclick="showTab('t3',this)">📦 解決方案</button>
+    <button class="nav-btn" onclick="showTab('t4',this)">🔧 設備指南</button>
+    <button class="nav-btn" onclick="showTab('t5',this)">💬 話術 &amp; FAQ</button>
+    <button class="nav-btn" onclick="showTab('t6',this)">📋 業務工具</button>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ============================
+     TAB 1：市場與法規
+     ============================ -->
+<div id="t1" class="tab active">
+
+  <div class="card">
+    <div class="card-title">一、市場現況與政策驅動</div>
+    <div class="vstack">
+      <div class="vitem"><div class="vlabel">現行納管企業</div><div class="vamt">300+</div><div class="vcert txt-sm txt-m">契約容量 5,000 kW 以上</div></div>
+      <div class="vitem"><div class="vlabel">電力需求年均成長率</div><div class="vamt">1.7%</div><div class="vcert txt-sm txt-m">114–123 年預估</div></div>
+      <div class="vitem"><div class="vlabel">不履約代金（10 MW 案例）</div><div class="vamt">NT$1,000 萬/年</div><div class="vcert txt-sm txt-m">1,000 kW × 2,500 度 × 4 元</div></div>
+      <div class="vitem"><div class="vlabel">夏月固定尖峰費率</div><div class="vamt">9.39 元/kWh</div><div class="vcert txt-sm txt-m">114/10/1 起生效</div></div>
+    </div>
+
+    <h3 class="mt2">三大政策驅動力</h3>
+    <div class="box box-info mt1">
+      <strong>① 再生能源發展條例第 12 條（現行有效）</strong><br>
+      契約容量 5,000 kW 以上用戶，5 年內必須完成義務裝置容量（契約容量 × 10%）的再生能源或儲能設備。現有約 300 家企業已被納管。
+    </div>
+    <div class="box box-warn mt1">
+      <strong>② 能源管理法修正草案（115/5/14 行政院通過，送立法院審議中）</strong><br>
+      修正條文第 10 條增訂「一定契約容量以上用戶應設置自用發電及儲能設備」，預期將大幅擴大納管範圍，潛在市場規模倍增。⚠️ 需追蹤立法院三讀結果
+    </div>
+    <div class="box box-tip mt1">
+      <strong>③ 電費持續調漲 + 三段式電價改革</strong><br>
+      夏月固定尖峰已達 9.39 元/kWh（114/10/1 起），尖離峰價差擴大，儲能套利空間顯著提升。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">二、法規義務完整解析</div>
+    <h3>義務計算公式（10 MW 案例）</h3>
+    <table class="mt1">
+      <thead><tr><th>項目</th><th>數值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>契約容量</td><td><strong>10,000 kW</strong></td><td>用電大戶門檻 2 倍</td></tr>
+        <tr><td>義務裝置容量</td><td><strong>1,000 kW（1 MW）</strong></td><td>契約容量 × 10%</td></tr>
+        <tr><td>儲能最低配置</td><td><strong>2,000 kWh（2 MWh）</strong></td><td>義務裝置容量 × 2 小時</td></tr>
+        <tr><td>年代金（不履約）</td><td><strong class="txt-m">NT$1,000 萬/年</strong></td><td>1,000 kW × 2,500 度 × 4 元/度</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="mt2">提早完成義務扣減優惠</h3>
+    <table class="mt1">
+      <thead><tr><th>完成時間</th><th>義務容量扣減</th><th>實際意義</th></tr></thead>
+      <tbody>
+        <tr><td><strong>3 年內完成</strong></td><td><span class="badge bg">扣減 20%</span></td><td>原需 1 MW，提早只需裝 0.8 MW</td></tr>
+        <tr><td>4 年內完成</td><td><span class="badge bw">扣減 10%</span></td><td>原需 1 MW，只需裝 0.9 MW</td></tr>
+        <tr><td>5 年期滿</td><td><span class="badge bd">無扣減</span></td><td>全額履行</td></tr>
+      </tbody>
+    </table>
+    <div class="box box-tip mt1">💡 <strong>業務切入點</strong>：提早完成可節省 20% CAPEX，時間窗口正在關閉，現在決策最有利。</div>
+
+    <h3 class="mt2">台電義務儲能需量反應方案比較</h3>
+    <p class="txt-sm txt-m mt1">放電要求：每週一至週五（離峰日除外）18:00–20:00 連續放電 2 小時，每日 1 次，放電期間不得充電</p>
+    <div class="grid2 mt2">
+      <div>
+        <strong style="color:var(--green)">方案 A：累進回饋型（推薦）</strong>
+        <table class="mt1">
+          <thead><tr><th>累計放電區間</th><th>回饋費率</th></tr></thead>
+          <tbody>
+            <tr><td>義務容量 × 0–150 小時</td><td>1 元/度</td></tr>
+            <tr><td>義務容量 × 151–400 小時</td><td>2 元/度</td></tr>
+            <tr><td>義務容量 × 401 小時以上</td><td><strong>5 元/度</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <strong style="color:var(--muted)">方案 B：義務時數型</strong>
+        <table class="mt1">
+          <thead><tr><th>累計放電區間</th><th>回饋費率</th></tr></thead>
+          <tbody>
+            <tr><td>義務容量 × 0–400 小時</td><td>0 元/度</td></tr>
+            <tr><td>義務容量 × 401 小時以上</td><td><strong>10 元/度</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="box box-info mt1">📊 以 10 MW 案例、年放電 500 小時計算：<strong>方案 A 年回饋 NT$115 萬</strong> vs 方案 B NT$100 萬 → 建議選擇方案 A</div>
+  </div>
+
+</div><!-- /t1 -->
+
+<!-- ============================
+     TAB 2：財務模型
+     ============================ -->
+<div id="t2" class="tab">
+
+  <div class="card">
+    <div class="card-title">三、儲能價值堆疊模型（10 MW 案例）</div>
+    <div class="vstack">
+      <div class="vitem"><div class="vlabel">義務回饋（累進方案A）</div><div class="vamt">NT$115 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 台電制度保障</div></div>
+      <div class="vitem"><div class="vlabel">夏月 TOU 套利</div><div class="vamt">NT$137 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 104 天一充一放</div></div>
+      <div class="vitem"><div class="vlabel">非夏月 TOU 套利</div><div class="vamt">NT$84 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 146 天二充二放</div></div>
+      <div class="vitem"><div class="vlabel">需量管理節費</div><div class="vamt">NT$228 萬</div><div class="vcert"><span class="badge bw">中確定性</span> 降契約容量 1 MW</div></div>
+      <div class="vitem"><div class="vlabel">輔助服務市場</div><div class="vamt">NT$50–150 萬</div><div class="vcert"><span class="badge bw">中確定性</span> E-dReg 等</div></div>
+      <div class="vitem"><div class="vlabel">代金避免（不裝的代價）</div><div class="vamt">NT$1,000 萬</div><div class="vcert"><span class="badge bd">懲罰性上限</span> 確定發生</div></div>
+    </div>
+    <div class="box box-info">⚡ <strong>核心論點</strong>：儲能投資不是單一用途，而是「義務履約 × 電價套利 × 需量管理 × 備援韌性」的疊加組合。只拿單一維度評估會嚴重低估 ROI。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">四、財務模型驗證數據</div>
+
+    <div class="grid2">
+      <div>
+        <h3>基礎假設（Base Case）</h3>
+        <table class="mt1">
+          <thead><tr><th>參數</th><th>數值</th></tr></thead>
+          <tbody>
+            <tr><td>契約容量</td><td>10,000 kW</td></tr>
+            <tr><td>BESS 規格</td><td>1 MW / 2 MWh</td></tr>
+            <tr><td>CAPEX</td><td>NT$1,000 萬/MW</td></tr>
+            <tr><td>RT 效率</td><td>90%</td></tr>
+            <tr><td>夏月平日</td><td>104 天（5/16–10/15）</td></tr>
+            <tr><td>非夏月平日</td><td>146 天</td></tr>
+            <tr><td>年義務放電天數</td><td>250 天</td></tr>
+            <tr><td>O&amp;M</td><td>NT$15 萬/年（CAPEX×1.5%）</td></tr>
+            <tr><td>電池衰退</td><td>1%/年</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>台電高壓三段式費率（114/10/1）</h3>
+        <table class="mt1">
+          <thead><tr><th>時段</th><th>費率</th></tr></thead>
+          <tbody>
+            <tr><td>夏月固定尖峰</td><td><strong>9.39 元/kWh</strong></td></tr>
+            <tr><td>夏月半尖峰</td><td>5.85 元/kWh</td></tr>
+            <tr><td>非夏月半尖峰</td><td><strong>5.47 元/kWh</strong></td></tr>
+            <tr><td>夏月離峰</td><td>2.53 元/kWh</td></tr>
+            <tr><td>非夏月離峰</td><td>2.32 元/kWh</td></tr>
+            <tr><td>基本電費（夏月）</td><td>223.60 元/kW-月</td></tr>
+            <tr><td>基本電費（非夏月）</td><td>166.90 元/kW-月</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="mt2">三情境財務結果（10 MW 案例）</h3>
+    <div class="sc-grid mt1">
+      <div class="sc-card rec">
+        <h4>情境 A：義務回饋 ＋ TOU 套利</h4>
+        <div class="sn">NT$321 萬</div>
+        <div class="ss">年淨效益 ｜ 回收 <strong>3.1 年</strong> ｜ IRR≈30%</div>
+      </div>
+      <div class="sc-card">
+        <h4>情境 B：+ 需量管理</h4>
+        <div class="sn">NT$549 萬</div>
+        <div class="ss">年淨效益 ｜ 回收 <strong>1.8 年</strong> ｜ IRR≈55%</div>
+      </div>
+      <div class="sc-card">
+        <h4>情境 C：對比繳代金</h4>
+        <div class="sn">NT$1,321 萬</div>
+        <div class="ss">年效益差距 ｜ 回收 &lt;1 年 ｜ IRR&gt;100%</div>
+      </div>
+    </div>
+    <div class="box box-warn">⚠️ 情境 C 是懲罰性上限比較，不是正常採購基準。多數企業以情境 A 或 B 做財務決策。</div>
+
+    <h3 class="mt2">套利策略計算明細</h3>
+    <div class="box box-info">
+      <strong>夏月每日（一充一放）：</strong>放電 2,000 kWh × 9.39 = NT$18,780｜充電 (2,000/0.9) kWh × 2.53 = NT$5,622｜每日淨 <strong>NT$13,158</strong><br>
+      <strong>非夏月每日（二充二放）：</strong>每循環放 1,000 kWh × 5.47 = NT$5,470｜充 (1,000/0.9) × 2.32 = NT$2,578｜每日淨 <strong>NT$5,784</strong>（×2循環）
+    </div>
+  </div>
+
+</div><!-- /t2 -->
+
+<!-- ============================
+     TAB 3：解決方案
+     ============================ -->
+<div id="t3" class="tab">
+  <div class="card">
+    <div class="card-title">五、三大解決方案套件</div>
+    <div class="sol-grid">
+      <div class="sol-card sol-s">
+        <div class="sol-tag">🔵 套件 S</div>
+        <h3>義務合規型</h3>
+        <div class="big">3.1 年</div>
+        <div class="txt-sm txt-m">基本回收年限 ｜ 年淨效益 NT$100–115 萬</div>
+        <ul>
+          <li>義務容量 × 2 MWh（最低標準）</li>
+          <li>基礎 PCS，支援定時放電</li>
+          <li>基礎 EMS 排程</li>
+          <li>累進回饋型方案（建議）</li>
+          <li>主要收益：義務回饋 ＋ 代金避免</li>
+        </ul>
+        <div class="box box-info txt-sm mt2">💡 「比繳代金划算 10 倍，而且只需要裝一次。」</div>
+        <div class="txt-sm txt-m mt1"><strong>目標客戶：</strong>預算保守型、製程干擾敏感型</div>
+      </div>
+      <div class="sol-card sol-m">
+        <div class="sol-tag">🟢 套件 M</div>
+        <h3>效益最大化型</h3>
+        <div class="big">3.1 年</div>
+        <div class="txt-sm txt-m">最優回收 ｜ 年淨效益 <strong>NT$321 萬</strong></div>
+        <ul>
+          <li>義務容量 × 2 MWh（可擴充至 4 MWh）</li>
+          <li>雙向 PCS，支援多循環</li>
+          <li>智慧 EMS：夏月一充一放 ＋ 非夏月二充二放</li>
+          <li>累進回饋型</li>
+          <li>義務回饋 ＋ 夏月尖峰套利 ＋ 非夏月半尖峰套利</li>
+        </ul>
+        <div class="box box-tip txt-sm mt2">💡 「義務回饋是底板，TOU 套利是加速器。3 年回本，後 7 年純收益。」</div>
+        <div class="txt-sm txt-m mt1"><strong>目標客戶：</strong>製程負載穩定、每日尖峰明確的製造業</div>
+      </div>
+      <div class="sol-card sol-l">
+        <div class="sol-tag">🟠 套件 L</div>
+        <h3>能源韌性型</h3>
+        <div class="big">1.8 年</div>
+        <div class="txt-sm txt-m">最快回收 ｜ 年淨效益 <strong>NT$549 萬</strong></div>
+        <ul>
+          <li>義務容量 × 4 MWh 以上</li>
+          <li>工業級 PCS ＋ UPS 備援功能</li>
+          <li>全功能 EMS：套利＋需量管理＋備援切換</li>
+          <li>符合消防安全審查要點</li>
+          <li>累進回饋 ＋ TOU 套利 ＋ 需量管理 ＋ 備援效益</li>
+        </ul>
+        <div class="box box-warn txt-sm mt2">💡 「停電一次的損失，可能就值回整套 CAPEX。備援是附加價值，財務上光靠電費就划算。」</div>
+        <div class="txt-sm txt-m mt1"><strong>目標客戶：</strong>資料中心、冷鏈物流、精密製程、CHP 場域</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /t3 -->
+
+<!-- ============================
+     TAB 4：設備指南
+     ============================ -->
+<div id="t4" class="tab">
+  <div class="card">
+    <div class="card-title">六、設備選型指南</div>
+
+    <h3>電池芯技術比較</h3>
+    <table class="mt1">
+      <thead><tr><th>技術</th><th>LFP（磷酸鋰鐵）</th><th>NMC（三元鋰）</th></tr></thead>
+      <tbody>
+        <tr><td>能量密度</td><td>中</td><td>高</td></tr>
+        <tr><td>循環壽命</td><td><strong>5,000–6,000 次</strong></td><td>2,000–3,000 次</td></tr>
+        <tr><td>安全性</td><td><strong>高，熱失控風險低</strong></td><td>需強化熱管理</td></tr>
+        <tr><td>消防法規</td><td><strong>相對寬鬆</strong></td><td>設計要求較嚴格</td></tr>
+        <tr><td>成本</td><td><strong>低（NT$5,000–8,000 萬/MWh）</strong></td><td>較高</td></tr>
+        <tr><td>用電大戶場景</td><td><strong>✅ 首選</strong></td><td>空間受限時考慮</td></tr>
+        <tr><td>年循環數（套件 M）</td><td>396 次/年（夏月 104 ＋ 非夏月 292）</td><td>同左</td></tr>
+        <tr><td>預估壽命</td><td><strong>12–15 年</strong></td><td>8–10 年</td></tr>
+      </tbody>
+    </table>
+    <div class="box box-tip mt1">💡 用電大戶 BTM 場景優先選 LFP。壽命符合 10 年財務模型、消防審查較易、10 年維護成本低。</div>
+
+    <h3 class="mt2">PCS 選型要點</h3>
+    <table class="mt1">
+      <thead><tr><th>功能需求</th><th>規格要求</th></tr></thead>
+      <tbody>
+        <tr><td>義務放電</td><td>支援定時模式，18:00–20:00 全功率輸出</td></tr>
+        <tr><td>TOU 套利</td><td>雙向 AC/DC，支援每日多循環</td></tr>
+        <tr><td>需量管理</td><td>毫秒級響應，30 分鐘需量積分追蹤</td></tr>
+        <tr><td>備援切換</td><td>支援離網/並網無縫切換（套件 L）</td></tr>
+        <tr><td>80% 功率門檻</td><td><span class="badge bd">法規要求</span> 平均放電功率 ≥ 義務容量 × 80%</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="mt2">EMS 功能矩陣</h3>
+    <table class="mt1">
+      <thead><tr><th>功能</th><th>套件 S</th><th>套件 M</th><th>套件 L</th></tr></thead>
+      <tbody>
+        <tr><td>定時放電排程</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>TOU 最佳化</td><td>—</td><td>✅</td><td>✅</td></tr>
+        <tr><td>需量監控預警</td><td>—</td><td>✅</td><td>✅</td></tr>
+        <tr><td>負載預測</td><td>—</td><td>—</td><td>✅</td></tr>
+        <tr><td>輔助服務介面</td><td>—</td><td>—</td><td>✅</td></tr>
+        <tr><td>遠端監控</td><td>—</td><td>✅</td><td>✅</td></tr>
+        <tr><td>能源報表（ESG）</td><td>—</td><td>✅</td><td>✅</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="mt2">消防法規合規要點</h3>
+    <div class="box box-warn mt1">依「鋰電池儲能系統消防安全審查要點」，以下項目需在設計階段確認：</div>
+    <ul style="list-style:none;padding:0;">
+      <li class="cl-item"><span>☐</span><span class="itxt">系統容量 &gt; 600 kWh：須申請消防審查</span></li>
+      <li class="cl-item"><span>☐</span><span class="itxt">電池間距、通道寬度符合規定</span></li>
+      <li class="cl-item"><span>☐</span><span class="itxt">自動滅火系統（水霧或潔淨氣體）</span></li>
+      <li class="cl-item"><span>☐</span><span class="itxt">氣體偵測、溫度監控、防爆設計</span></li>
+      <li class="cl-item"><span>☐</span><span class="itxt">BMS 過充/過放保護與 SOC 視窗管理</span></li>
+      <li class="cl-item"><span>☐</span><span class="itxt">消防安全審查時程：通常 3–6 個月，需納入專案時程規劃</span></li>
+    </ul>
+  </div>
+</div><!-- /t4 -->
+
+<!-- ============================
+     TAB 5：話術 & FAQ
+     ============================ -->
+<div id="t5" class="tab">
+  <div class="card">
+    <div class="card-title">七、業務推廣話術庫</div>
+
+    <h3>開場問句（篩選合格客戶）</h3>
+    <div class="box box-info mt1">
+      <p><strong>① 「請問貴公司的電力契約容量是多少 kW？」</strong><br>→ 超過 5,000 kW → 已在法規納管範圍，進入義務說明</p>
+      <hr class="divider">
+      <p><strong>② 「貴公司收到過能源署的通知函嗎？」</strong><br>→ 若是 → 已有履約壓力，時間緊迫<br>→ 若否 → 說明通知期限起算，5 年履約窗口</p>
+      <hr class="divider">
+      <p><strong>③ 「目前貴公司是否有評估過再生能源或儲能設備的方案？」</strong><br>→ 評估中 → 提供財務比較<br>→ 未評估 → 從代金試算切入</p>
+    </div>
+
+    <h3 class="mt2">核心價值主張（依客戶類型）</h3>
+    <div class="speech mt1"><div class="spk">財務長 / CFO</div>「以 10 MW 契約容量為例，每年不履約的代金是 1,000 萬。一套 1 MW/2 MWh 的儲能系統，含台電義務回饋和三段式電價套利，年淨效益約 320 萬，3 年即可回本。後面 7 年都是純收益，IRR 約 30%。」</div>
+    <div class="speech mt1"><div class="spk">廠務長 / 設施主管</div>「儲能系統的義務放電窗口是 18:00–20:00，剛好是台灣的夜尖峰高點，你們原本就要從台電買最貴的電。裝了儲能之後，這 2 個小時改用自己存的便宜電，電費每年就省下 100 多萬，同時把法規義務一起解決了。」</div>
+    <div class="speech mt1"><div class="spk">ESG / 永續長</div>「儲能設備可以和再生能源搭配，協助平衡間歇性，支援企業 RE100 目標。同時，符合能源管理法義務也是 ESG 評分的重要項目，在國際供應鏈審查中越來越被重視。」</div>
+
+    <h3 class="mt2">異議處理</h3>
+    <div class="faq-item mt1">
+      <div class="faq-q" onclick="toggleFaq(this)">Q：「CAPEX 太高，資金壓力大。」 <span>▼</span></div>
+      <div class="faq-a">有兩個方向可以降低初始門檻。第一，提早完成義務（3 年內）可減少 20% 的義務裝置容量，CAPEX 可降兩成。第二，若廠區在工業區或產業園區，有機會申請經濟部產業儲能補助，最高補助 50% CAPEX。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q：「等看看，不急。」 <span>▼</span></div>
+      <div class="faq-a">有三個時間窗口正在關閉：① 3 年內完成扣減 20% 義務容量的優惠；② 能源管理法修正草案正在立法院審議，通過後可能擴大納管；③ 設備交期和施工資源有限，建議盡早規劃。現在簽的話，我們可以確保在扣減時間窗口內完成。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q：「儲能設備消防要求很複雜。」 <span>▼</span></div>
+      <div class="faq-a">這是真的，但我們有完整的消防審查輔助服務。從設計階段就導入消防顧問，確保系統配置符合鋰電池儲能系統消防安全審查要點。只要設計階段規劃好，審查時間大概 3–6 個月，不會成為工期瓶頸。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q：「我們已經有在買綠電憑證了。」 <span>▼</span></div>
+      <div class="faq-a">綠電憑證可以履行再生能源義務，但無法解決尖峰電費問題，也無法提供備援。儲能除了可以替代憑證購買（年約 500 萬以上），還額外帶來 TOU 套利和需量管理的效益。長期下來，儲能方案的總成本通常低於純綠電採購。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">八、常見問題 FAQ</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q1：BTM 儲能和 FTM 儲能有什麼差別？ <span>▼</span></div>
+      <div class="faq-a">BTM（表後儲能）安裝在用戶電表之後，電力僅供自用，主要收益來自電費節省和義務回饋，目前無法逆送電網販售。FTM（表前儲能）連接至輸電側或配電側，可參與電力市場交易，但建置成本和監管要求較高。用電大戶的儲能義務，BTM 方案是最常見的選擇。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q2：義務履約的認定標準是什麼？ <span>▼</span></div>
+      <div class="faq-a">法規要求：①設備運轉期間平均放電功率 ≥ 義務裝置容量的 80%；②每週一至週五（離峰日除外）18:00–20:00 連續放電 2 小時；③以 12 個月為一期進行考核。未達標者，其設備不得計入義務容量，需補繳代金。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q3：非夏月可以做二充二放嗎？電池壽命夠嗎？ <span>▼</span></div>
+      <div class="faq-a">以 LFP 電池、每年 396 循環（夏月 104 次 ＋ 非夏月 292 次）計算，LFP 的循環壽命約 5,000–6,000 次，預估使用年限 12–15 年，超過 10 年財務模型的計算基期，不構成問題。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q4：可以同時參與台電輔助服務市場嗎？ <span>▼</span></div>
+      <div class="faq-a">技術上可行，但需要 EMS 進行 SOC 視窗管理，確保在提供輔助服務備轉容量時，仍保有足夠電量執行義務放電和 TOU 套利。目前建議將輔助服務列為附加收益，而非核心財務假設。[需確認最新台電受理條件]</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q5：能源管理法修正草案通過後，會有什麼新義務？ <span>▼</span></div>
+      <div class="faq-a">草案增訂「一定契約容量以上用戶應設置自用發電及儲能設備」，但「一定容量」門檻、裝置比例、完成期限等細節均待子法授權訂定。目前草案已通過行政院，送立法院審議中。建議先行評估現行《再生能源發展條例》下的義務，並預留未來擴充空間。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Q6：設置儲能後，電表和契約需要變更嗎？ <span>▼</span></div>
+      <div class="faq-a">需向台電辦理：①自用發電設備設置申請；②義務儲能設備履約申請（向能源署登記）；③參與義務儲能需量反應方案（向台電申請，選擇累進回饋型或義務時數型）。建議委託有台電流程經驗的 EPC 廠商統一處理。</div>
+    </div>
+  </div>
+</div><!-- /t5 -->
+
+<!-- ============================
+     TAB 6：業務工具（互動表單）
+     ============================ -->
+<div id="t6" class="tab">
+
+  <!-- 進度指示 -->
+  <div class="card" style="padding:1rem 1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong>表單完成進度</strong>
+      <span id="prog-txt" style="font-size:.875rem;color:var(--muted);">0 / 0 項已勾選</span>
+    </div>
+    <div class="prog-wrap mt1"><div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div></div>
+  </div>
+
+  <!-- S1：客戶基本資料 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">1</div> 客戶基本資料</div>
+    <div class="form-grid">
+      <div class="fg"><label>客戶公司名稱 *</label><input type="text" id="f_company" placeholder="例：台積電股份有限公司" oninput="saveForm()"></div>
+      <div class="fg"><label>業務姓名 *</label><input type="text" id="f_sales" placeholder="業務員姓名" oninput="saveForm()"></div>
+      <div class="fg"><label>拜訪 / 提案日期</label><input type="date" id="f_date" oninput="saveForm()"></div>
+      <div class="fg"><label>聯絡人姓名</label><input type="text" id="f_contact" placeholder="客戶聯絡人" oninput="saveForm()"></div>
+      <div class="fg"><label>聯絡人職稱</label><input type="text" id="f_title" placeholder="例：廠務處長" oninput="saveForm()"></div>
+      <div class="fg"><label>聯絡人電話 / 信箱</label><input type="text" id="f_phone" placeholder="電話或 email" oninput="saveForm()"></div>
+    </div>
+    <div class="form-grid mt2">
+      <div class="fg">
+        <label>契約容量（kW） *</label>
+        <input type="number" id="f_kw" placeholder="例：10000" min="5000" step="500" oninput="saveForm();calcFinancials()">
+      </div>
+      <div class="fg">
+        <label>廠區所在地類型</label>
+        <select id="f_zone" onchange="saveForm()">
+          <option value="">請選擇</option>
+          <option value="工業區">工業區</option>
+          <option value="科學園區">科學園區</option>
+          <option value="一般商業">一般商業區</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>電壓等級</label>
+        <select id="f_volt" onchange="saveForm()">
+          <option value="">請選擇</option>
+          <option value="高壓">高壓（11.4/22.8 kV）</option>
+          <option value="特高壓">特高壓（69/161 kV）</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>建議方案</label>
+        <select id="f_plan" onchange="saveForm()">
+          <option value="">待評估</option>
+          <option value="S">套件 S｜義務合規型</option>
+          <option value="M">套件 M｜效益最大化型（推薦）</option>
+          <option value="L">套件 L｜能源韌性型</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid mt1">
+      <div class="fg" style="flex-direction:row;align-items:center;gap:.75rem;grid-column:1/-1;">
+        <input type="checkbox" id="f_notified" onchange="saveForm()" style="width:18px;height:18px;accent-color:var(--primary);">
+        <label for="f_notified" style="cursor:pointer;">已收到能源署通知函（義務履約期限已起算）</label>
+      </div>
+      <div class="fg" style="flex-direction:row;align-items:center;gap:.75rem;grid-column:1/-1;">
+        <input type="checkbox" id="f_early" onchange="saveForm();calcFinancials()" style="width:18px;height:18px;accent-color:var(--primary);">
+        <label for="f_early" style="cursor:pointer;">目標 3 年內完成（適用 20% 義務容量扣減優惠）</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 即時財務試算 -->
+  <div class="calc-box" id="calc-box" style="display:none;">
+    <h3>⚡ 即時財務試算</h3>
+    <div class="calc-grid">
+      <div class="calc-item"><div class="cl">義務裝置容量</div><div class="cv" id="c-mandatory">—</div><div class="cs">kW</div></div>
+      <div class="calc-item"><div class="cl">最低儲能配置</div><div class="cv" id="c-storage">—</div><div class="cs">kWh</div></div>
+      <div class="calc-item"><div class="cl">CAPEX 估算</div><div class="cv" id="c-capex">—</div><div class="cs">萬元</div></div>
+      <div class="calc-item"><div class="cl">年代金（不履約）</div><div class="cv" id="c-penalty">—</div><div class="cs">萬/年</div></div>
+      <div class="calc-item"><div class="cl">年淨效益（情境 A）</div><div class="cv" id="c-netA">—</div><div class="cs">萬/年</div></div>
+      <div class="calc-item"><div class="cl">預估回收年限</div><div class="cv" id="c-payback">—</div><div class="cs">年</div></div>
+    </div>
+  </div>
+
+  <!-- S2：業務前期確認 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">2</div> 業務前期確認清單（對客戶）</div>
+    <div class="cl-group" id="grp-pre"></div>
+  </div>
+
+  <!-- S3：方案設計確認 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">3</div> 方案設計確認清單（對內部技術團隊）</div>
+    <div class="cl-group" id="grp-design"></div>
+  </div>
+
+  <!-- S4：財務模型確認 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">4</div> 財務模型確認清單</div>
+    <div class="cl-group" id="grp-fin"></div>
+  </div>
+
+  <!-- S5：跟進追蹤 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">5</div> 跟進追蹤事項</div>
+    <div class="cl-group" id="grp-track"></div>
+  </div>
+
+  <!-- S6：備註 -->
+  <div class="form-sec">
+    <div class="form-sec-title"><div class="num">6</div> 備註 &amp; 下一步行動</div>
+    <div class="fg"><label>備註</label><textarea id="f_notes" placeholder="記錄客戶特殊需求、疑慮、會議重點……" rows="4" oninput="saveForm()"></textarea></div>
+    <div class="fg mt1"><label>下一步行動 &amp; 期限</label><input type="text" id="f_next" placeholder="例：2026/7/1 前提交財務試算報告" oninput="saveForm()"></div>
+  </div>
+
+  <!-- 操作按鈕 -->
+  <div class="btn-group">
+    <button class="btn btn-o" onclick="clearForm()">🗑 清除表單</button>
+    <button class="btn btn-p" onclick="openReport('supervisor')">📊 產出主管報告</button>
+    <button class="btn btn-g" onclick="openReport('evaluation')">📄 產出客戶評估報告</button>
+  </div>
+
+</div><!-- /t6 -->
+
+</div><!-- /content -->
+
+<!-- ==============================
+     PRINT OVERLAY：主管報告
+     ============================== -->
+<div id="overlay-sup" class="overlay">
+  <div class="doc">
+    <div class="doc-ctrl overlay-noPrint">
+      <button class="btn btn-p" onclick="window.print()">🖨 列印 / 儲存 PDF</button>
+      <button class="btn btn-o" onclick="closeReport('supervisor')">✕ 關閉</button>
+    </div>
+    <div id="doc-sup-content"></div>
+  </div>
+</div>
+
+<!-- ==============================
+     PRINT OVERLAY：客戶評估報告
+     ============================== -->
+<div id="overlay-eval" class="overlay">
+  <div class="doc">
+    <div class="doc-ctrl overlay-noPrint">
+      <button class="btn btn-g" onclick="window.print()">🖨 列印 / 儲存 PDF</button>
+      <button class="btn btn-o" onclick="closeReport('evaluation')">✕ 關閉</button>
+    </div>
+    <div id="doc-eval-content"></div>
+  </div>
+</div>
+
+<script>
+// ── TAB NAVIGATION ─────────────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── FAQ TOGGLE ─────────────────────────────────────────────────────────────────
+function toggleFaq(el) {
+  const ans = el.nextElementSibling;
+  const isOpen = ans.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  ans.classList.toggle('open', !isOpen);
+}
+
+// ── CHECKLIST DATA ─────────────────────────────────────────────────────────────
+const CHECKLISTS = {
+  'grp-pre': [
+    '確認契約容量是否已達 5,000 kW 以上',
+    '確認是否已收到能源署通知函（通知期限起算點）',
+    '了解廠區所在地類型（工業區/科學園區 → 有補助資格）',
+    '了解現有電費結構（高壓/特高壓、三段式/二段式）',
+    '詢問製程負載特性（是否有每日明確尖峰）',
+    '評估設置空間（室內/戶外、消防設計可行性）',
+  ],
+  'grp-design': [
+    '義務裝置容量計算（前一年度平均契約容量 × 10%）',
+    '儲能最低配置確認（義務容量 × 2 MWh）',
+    '提早完成扣減評估（3 年 = -20%，4 年 = -10%）',
+    'EMS 策略設計（一充一放 vs 二充二放，SOC 視窗管理）',
+    '消防法規審查時程納入專案計畫',
+    'CAPEX 全包確認（PCS、BMS、EMS、消防、併網改造均含）',
+  ],
+  'grp-fin': [
+    '電費費率以台電 114/10/1 公告費率為準',
+    '義務回饋方案：比較累進回饋型 vs 義務時數型，選最優',
+    '10 年現金流包含 1% 電池衰退率',
+    '情境分析至少涵蓋：純套利、套利+需量管理、對比代金',
+    '標明不確定項目（輔助服務市場收益、補助資格）',
+  ],
+  'grp-track': [
+    '能源管理法第 10 條立法院審議進展',
+    '經濟部產業儲能補助（115 年度受理期間至 2026/6/30）',
+    '台電義務儲能需量反應方案年度更新',
+    '電池儲能消防安全審查要點最新版本',
+  ],
+};
+
+// ── RENDER CHECKLISTS ───────────────────────────────────────────────────────────
+function renderChecklists() {
+  Object.entries(CHECKLISTS).forEach(([gid, items]) => {
+    const grp = document.getElementById(gid);
+    if (!grp) return;
+    grp.innerHTML = '';
+    const saved = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+    items.forEach((txt, i) => {
+      const key = gid + '_' + i;
+      const checked = saved[key] || false;
+      const div = document.createElement('div');
+      div.className = 'cl-item' + (checked ? ' done' : '');
+      div.innerHTML = `<input type="checkbox" id="${key}" ${checked?'checked':''}><label class="itxt" for="${key}">${txt}</label>`;
+      div.querySelector('input').addEventListener('change', function() {
+        const c = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+        c[key] = this.checked;
+        localStorage.setItem('bess_checks', JSON.stringify(c));
+        div.classList.toggle('done', this.checked);
+        updateProgress();
+      });
+      grp.appendChild(div);
+    });
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = Object.values(CHECKLISTS).reduce((s, a) => s + a.length, 0);
+  const saved = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+  const done = Object.values(saved).filter(Boolean).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = `${done} / ${total} 項已勾選 (${pct}%)`;
+}
+
+// ── FORM SAVE / LOAD ────────────────────────────────────────────────────────────
+const FIELDS = ['f_company','f_sales','f_date','f_contact','f_title','f_phone','f_kw','f_zone','f_volt','f_plan','f_notes','f_next'];
+
+function saveForm() {
+  const data = {};
+  FIELDS.forEach(id => { const el = document.getElementById(id); if(el) data[id] = el.value; });
+  data['f_notified'] = document.getElementById('f_notified').checked;
+  data['f_early'] = document.getElementById('f_early').checked;
+  localStorage.setItem('bess_form', JSON.stringify(data));
+}
+
+function loadForm() {
+  const data = JSON.parse(localStorage.getItem('bess_form') || '{}');
+  FIELDS.forEach(id => { const el = document.getElementById(id); if(el && data[id] !== undefined) el.value = data[id]; });
+  if(data['f_notified'] !== undefined) document.getElementById('f_notified').checked = data['f_notified'];
+  if(data['f_early'] !== undefined) document.getElementById('f_early').checked = data['f_early'];
+}
+
+function clearForm() {
+  if (!confirm('確定要清除所有表單資料嗎？')) return;
+  localStorage.removeItem('bess_form');
+  localStorage.removeItem('bess_checks');
+  FIELDS.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('f_notified').checked = false;
+  document.getElementById('f_early').checked = false;
+  document.getElementById('calc-box').style.display = 'none';
+  renderChecklists();
+}
+
+// ── FINANCIAL CALC ──────────────────────────────────────────────────────────────
+function calcFinancials() {
+  const kw = parseFloat(document.getElementById('f_kw').value);
+  const early = document.getElementById('f_early').checked;
+  if (!kw || kw < 5000) { document.getElementById('calc-box').style.display='none'; return; }
+  document.getElementById('calc-box').style.display = 'block';
+
+  const ratio = kw / 10000;
+  const disc = early ? 0.8 : 1.0;
+
+  const mandatory = Math.round(kw * 0.1 * disc);
+  const storage = mandatory * 2;
+  const capex = Math.round(kw * 0.1 * disc);        // 萬元（1,000萬/MW）
+  const penalty = Math.round(kw * 0.1 * 2500 * 4 / 10000 * disc); // 萬/年
+  const netA = Math.round(321 * ratio * disc);
+  const payback = capex > 0 ? (capex / netA).toFixed(1) : '—';
+
+  document.getElementById('c-mandatory').textContent = mandatory.toLocaleString();
+  document.getElementById('c-storage').textContent = storage.toLocaleString();
+  document.getElementById('c-capex').textContent = capex.toLocaleString();
+  document.getElementById('c-penalty').textContent = penalty.toLocaleString();
+  document.getElementById('c-netA').textContent = netA.toLocaleString();
+  document.getElementById('c-payback').textContent = payback;
+}
+
+// ── GET FORM DATA ───────────────────────────────────────────────────────────────
+function getFormData() {
+  const d = {};
+  FIELDS.forEach(id => { const el = document.getElementById(id); d[id] = el ? el.value : ''; });
+  d['f_notified'] = document.getElementById('f_notified').checked;
+  d['f_early'] = document.getElementById('f_early').checked;
+  d['checks'] = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+  return d;
+}
+
+function getCheckCount(gid) {
+  const c = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+  const total = CHECKLISTS[gid].length;
+  const done = CHECKLISTS[gid].filter((_,i) => c[gid+'_'+i]).length;
+  return { done, total };
+}
+
+function checkListHTML(gid) {
+  const c = JSON.parse(localStorage.getItem('bess_checks') || '{}');
+  return CHECKLISTS[gid].map((txt,i) => {
+    const checked = c[gid+'_'+i];
+    return `<div style="display:flex;gap:.5rem;padding:.35rem 0;font-size:.85rem;border-bottom:1px solid #f0f0f0;">
+      <span style="color:${checked?'#059669':'#dc2626'};font-weight:700;flex-shrink:0;">${checked?'✓':'○'}</span>
+      <span style="color:${checked?'#1e293b':'#64748b'}">${txt}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── OPEN / CLOSE REPORTS ────────────────────────────────────────────────────────
+function openReport(type) {
+  const d = getFormData();
+  if (!d.f_company || !d.f_kw) {
+    alert('請先填寫「客戶公司名稱」和「契約容量」再產出報告。');
+    showTab('t6', document.querySelectorAll('.nav-btn')[5]);
+    return;
+  }
+
+  const kw = parseFloat(d.f_kw);
+  const ratio = kw / 10000;
+  const disc = d.f_early ? 0.8 : 1.0;
+  const mandatory = Math.round(kw * 0.1 * disc);
+  const storage = mandatory * 2;
+  const capex = Math.round(kw * 0.1 * disc);
+  const penalty = Math.round(kw * 0.1 * 2500 * 4 / 10000);
+  const netA = Math.round(321 * ratio * disc);
+  const netB = Math.round(549 * ratio * disc);
+  const paybackA = (capex / netA).toFixed(1);
+  const paybackB = (capex / netB).toFixed(1);
+  const planMap = {S:'套件 S｜義務合規型', M:'套件 M｜效益最大化型', L:'套件 L｜能源韌性型', '':'待評估'};
+  const planName = planMap[d.f_plan] || '待評估';
+
+  if (type === 'supervisor') {
+    const pre = getCheckCount('grp-pre');
+    const des = getCheckCount('grp-design');
+    const fin = getCheckCount('grp-fin');
+    const trk = getCheckCount('grp-track');
+    document.getElementById('doc-sup-content').innerHTML = `
+<div class="rpt-header">
+  <h2>業務拜訪紀錄 ｜ 主管報告</h2>
+  <p>報告產出時間：${new Date().toLocaleDateString('zh-TW')} ｜ 版本：台電 114/10/1 費率</p>
+</div>
+<div class="rpt-section">
+  <h3>客戶資訊</h3>
+  <div class="rpt-row"><span class="rk">客戶公司</span><span class="rv">${d.f_company}</span></div>
+  <div class="rpt-row"><span class="rk">業務姓名</span><span class="rv">${d.f_sales||'—'}</span></div>
+  <div class="rpt-row"><span class="rk">拜訪日期</span><span class="rv">${d.f_date||'—'}</span></div>
+  <div class="rpt-row"><span class="rk">聯絡人</span><span class="rv">${d.f_contact||'—'} ${d.f_title?'（'+d.f_title+'）':''}</span></div>
+  <div class="rpt-row"><span class="rk">聯絡方式</span><span class="rv">${d.f_phone||'—'}</span></div>
+</div>
+<div class="rpt-section">
+  <h3>客戶基本條件</h3>
+  <div class="rpt-row"><span class="rk">契約容量</span><span class="rv">${kw.toLocaleString()} kW</span></div>
+  <div class="rpt-row"><span class="rk">廠區類型</span><span class="rv">${d.f_zone||'—'}</span></div>
+  <div class="rpt-row"><span class="rk">電壓等級</span><span class="rv">${d.f_volt||'—'}</span></div>
+  <div class="rpt-row"><span class="rk">已收能源署通知函</span><span class="rv">${d.f_notified?'是（履約期限已起算）':'否（尚未接獲通知）'}</span></div>
+  <div class="rpt-row"><span class="rk">目標 3 年內完成</span><span class="rv">${d.f_early?'是（可享 20% 扣減）':'否'}</span></div>
+  <div class="rpt-row"><span class="rk">建議方案</span><span class="rv">${planName}</span></div>
+</div>
+<div class="rpt-section">
+  <h3>財務關鍵指標（估算）</h3>
+  <div class="rpt-row"><span class="rk">義務裝置容量</span><span class="rv">${mandatory.toLocaleString()} kW</span></div>
+  <div class="rpt-row"><span class="rk">最低儲能配置</span><span class="rv">${storage.toLocaleString()} kWh</span></div>
+  <div class="rpt-row"><span class="rk">CAPEX 估算</span><span class="rv">NT$${capex.toLocaleString()} 萬元</span></div>
+  <div class="rpt-row"><span class="rk">年代金（不履約）</span><span class="rv">NT$${penalty.toLocaleString()} 萬/年</span></div>
+  <div class="rpt-row"><span class="rk">年淨效益（情境 A）</span><span class="rv">NT$${netA.toLocaleString()} 萬/年，回收 ${paybackA} 年</span></div>
+  <div class="rpt-row"><span class="rk">年淨效益（情境 B）</span><span class="rv">NT$${netB.toLocaleString()} 萬/年，回收 ${paybackB} 年</span></div>
+</div>
+<div class="rpt-section">
+  <h3>清單完成情況</h3>
+  <div class="rpt-row"><span class="rk">業務前期確認</span><span class="rv">${pre.done}/${pre.total} 項完成</span></div>
+  <div class="rpt-row"><span class="rk">方案設計確認</span><span class="rv">${des.done}/${des.total} 項完成</span></div>
+  <div class="rpt-row"><span class="rk">財務模型確認</span><span class="rv">${fin.done}/${fin.total} 項完成</span></div>
+  <div class="rpt-row"><span class="rk">跟進追蹤事項</span><span class="rv">${trk.done}/${trk.total} 項完成</span></div>
+</div>
+<div class="rpt-section">
+  <h3>業務前期確認詳細</h3>
+  ${checkListHTML('grp-pre')}
+</div>
+<div class="rpt-section">
+  <h3>方案設計確認詳細</h3>
+  ${checkListHTML('grp-design')}
+</div>
+<div class="rpt-section">
+  <h3>財務模型確認詳細</h3>
+  ${checkListHTML('grp-fin')}
+</div>
+<div class="rpt-section">
+  <h3>備註 &amp; 下一步行動</h3>
+  <div style="padding:.75rem;background:var(--bg);border-radius:6px;font-size:.875rem;white-space:pre-wrap;">${d.f_notes||'（無備註）'}</div>
+  <div class="rpt-row mt1"><span class="rk">下一步行動</span><span class="rv">${d.f_next||'—'}</span></div>
+</div>
+<div class="sig-area">
+  <div class="sig-box">業務簽名：________________<br>姓名：${d.f_sales||'________'}</div>
+  <div class="sig-box">主管簽核：________________<br>日期：________________</div>
+</div>`;
+    document.getElementById('overlay-sup').classList.add('open');
+  }
+
+  if (type === 'evaluation') {
+    const summerArb = Math.round(137 * ratio * disc);
+    const nonSummerArb = Math.round(84 * ratio * disc);
+    const feedback = Math.round(115 * ratio * disc);
+    const demand = Math.round(228 * ratio * disc);
+    document.getElementById('doc-eval-content').innerHTML = `
+<div class="rpt-header">
+  <h2>儲能投資效益評估報告</h2>
+  <p>客戶：${d.f_company} ｜ 報告日期：${d.f_date||new Date().toLocaleDateString('zh-TW')} ｜ 資料基準：台電 114/10/1 費率</p>
+</div>
+<div class="rpt-section">
+  <h3>基本條件</h3>
+  <div class="rpt-row"><span class="rk">契約容量</span><span class="rv">${kw.toLocaleString()} kW</span></div>
+  <div class="rpt-row"><span class="rk">法規義務（再生能源發展條例 §12）</span><span class="rv">契約容量 5,000 kW 以上，5 年內須完成義務</span></div>
+  <div class="rpt-row"><span class="rk">義務裝置容量</span><span class="rv">${mandatory.toLocaleString()} kW${d.f_early?' （已含 20% 提早完成扣減）':''}</span></div>
+  <div class="rpt-row"><span class="rk">最低儲能配置</span><span class="rv">${storage.toLocaleString()} kWh（${mandatory} kW × 2 小時）</span></div>
+</div>
+<div class="rpt-section">
+  <h3>不履約代金試算</h3>
+  <div class="rpt-row"><span class="rk">年代金金額</span><span class="rv" style="color:var(--red);font-size:1.1rem;">NT$${penalty.toLocaleString()} 萬/年</span></div>
+  <div class="rpt-row"><span class="rk">計算依據</span><span class="rv">${mandatory.toLocaleString()} kW × 2,500 度/kW × 4 元/度</span></div>
+  <div style="padding:.6rem .75rem;background:var(--red-light);border-radius:6px;font-size:.825rem;margin-top:.5rem;color:var(--red);">
+    每年白白繳出 NT$${penalty.toLocaleString()} 萬，5 年累計 NT$${(penalty*5).toLocaleString()} 萬，且無法換得任何資產。
+  </div>
+</div>
+<div class="fin-highlight">
+  <h3>儲能系統年效益分解（估算）</h3>
+  <div class="fin-row"><span class="fk">義務需量反應回饋（累進方案A）</span><span class="fv">NT$${feedback.toLocaleString()} 萬/年</span></div>
+  <div class="fin-row"><span class="fk">夏月 TOU 套利（104 天一充一放）</span><span class="fv">NT$${summerArb.toLocaleString()} 萬/年</span></div>
+  <div class="fin-row"><span class="fk">非夏月 TOU 套利（146 天二充二放）</span><span class="fv">NT$${nonSummerArb.toLocaleString()} 萬/年</span></div>
+  <div class="fin-row"><span class="fk">O&amp;M 成本</span><span class="fv">- NT$${Math.round(capex*0.015).toLocaleString()} 萬/年</span></div>
+  <div class="fin-row" style="font-size:1rem;padding:.5rem 0;"><span class="fk"><strong>情境 A 年淨效益</strong></span><span class="fv"><strong>NT$${netA.toLocaleString()} 萬/年</strong></span></div>
+  <div class="fin-row"><span class="fk">＋ 需量管理（降契約容量）</span><span class="fv">NT$${demand.toLocaleString()} 萬/年</span></div>
+  <div class="fin-row" style="font-size:1rem;padding:.5rem 0;"><span class="fk"><strong>情境 B 年淨效益</strong></span><span class="fv"><strong>NT$${netB.toLocaleString()} 萬/年</strong></span></div>
+</div>
+<div class="rpt-section">
+  <h3>三情境財務比較</h3>
+  <table>
+    <thead><tr><th>情境</th><th>年淨效益</th><th>CAPEX</th><th>回收年限</th><th>IRR（10年）</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A：義務回饋＋TOU套利</strong></td><td>NT$${netA.toLocaleString()} 萬</td><td>NT$${capex.toLocaleString()} 萬</td><td><strong>${paybackA} 年</strong></td><td>約 30%</td></tr>
+      <tr><td><strong>B：情境A＋需量管理</strong></td><td>NT$${netB.toLocaleString()} 萬</td><td>NT$${capex.toLocaleString()} 萬</td><td><strong>${paybackB} 年</strong></td><td>約 55%</td></tr>
+      <tr style="background:#fff1f2;"><td>C：繳代金（不裝）</td><td style="color:var(--red);">- NT$${penalty.toLocaleString()} 萬/年</td><td>NT$0</td><td>永遠付出</td><td>— %</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="rpt-section">
+  <h3>建議方案</h3>
+  <div style="padding:1rem;border:2px solid var(--primary);border-radius:8px;font-size:.9rem;">
+    <strong>${planName}</strong><br>
+    ${d.f_plan==='S'?'最低成本合規，義務回饋為主要收益，適合預算保守或製程干擾敏感的企業。':
+      d.f_plan==='M'?'義務履約與 TOU 套利雙效，3 年回本，後 7 年純收益，適合負載穩定的製造業。':
+      d.f_plan==='L'?'全面能源管理，含備援功能，需量管理加速回收，適合高可靠度需求場域。':
+      '待現場評估後確認最佳方案。'}
+  </div>
+</div>
+<div class="rpt-section">
+  <h3>重要提醒</h3>
+  <ul style="padding-left:1.2rem;font-size:.85rem;color:var(--muted);">
+    <li>本報告財務數字以 10 MW 基礎案例等比例換算，實際效益依場域條件、製程負載特性調整。</li>
+    <li>電費費率以台電 114/10/1 公告為準，未來費率調整將影響套利效益。</li>
+    <li>輔助服務市場收益（E-dReg 等）未納入本估算，為附加收益。</li>
+    <li>若廠區位於工業區/科學園區，建議申請經濟部產業儲能補助（最高 50% CAPEX）。</li>
+    <li>系統容量 &gt; 600 kWh 須申請消防安全審查，建議設計階段即規劃，時程約 3–6 個月。</li>
+    <li>能源管理法修正草案（115/5/14 行政院通過）仍在立法院審議，通過後可能擴大納管範圍。</li>
+  </ul>
+</div>
+<div class="sig-area">
+  <div class="sig-box">業務提案人：________________<br>${d.f_sales||''}</div>
+  <div class="sig-box">客戶確認：________________<br>${d.f_contact||''} / ${d.f_company}</div>
+</div>
+<p style="text-align:center;font-size:.75rem;color:var(--muted);margin-top:2rem;">本報告由儲能產品應用技術專家根據現行法規與市場資料編製。法規資訊如有更新，以官方公告為準。</p>`;
+    document.getElementById('overlay-eval').classList.add('open');
+  }
+}
+
+function closeReport(type) {
+  if (type === 'supervisor') document.getElementById('overlay-sup').classList.remove('open');
+  if (type === 'evaluation') document.getElementById('overlay-eval').classList.remove('open');
+}
+
+// Close overlay on background click
+document.getElementById('overlay-sup').addEventListener('click', function(e) { if(e.target===this) closeReport('supervisor'); });
+document.getElementById('overlay-eval').addEventListener('click', function(e) { if(e.target===this) closeReport('evaluation'); });
+
+// ── INIT ────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  renderChecklists();
+  loadForm();
+  calcFinancials();
+  // Set today's date if not saved
+  const d = document.getElementById('f_date');
+  if (!d.value) { const t = new Date(); d.value = t.toISOString().split('T')[0]; }
+});
+</script>
+</body>
+</html>
