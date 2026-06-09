@@ -327,15 +327,62 @@ tr:hover td{background:var(--primary-light);}
 
   <div class="card">
     <div class="card-title">三、儲能價值堆疊模型（10 MW 案例）</div>
-    <div class="vstack">
-      <div class="vitem"><div class="vlabel">義務回饋（累進方案A）</div><div class="vamt">NT$115 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 台電制度保障</div></div>
-      <div class="vitem"><div class="vlabel">夏月 TOU 套利</div><div class="vamt">NT$137 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 104 天一充一放</div></div>
-      <div class="vitem"><div class="vlabel">非夏月 TOU 套利</div><div class="vamt">NT$84 萬</div><div class="vcert"><span class="badge bg">高確定性</span> 146 天二充二放</div></div>
-      <div class="vitem"><div class="vlabel">需量管理節費</div><div class="vamt">NT$228 萬</div><div class="vcert"><span class="badge bw">中確定性</span> 降契約容量 1 MW</div></div>
-      <div class="vitem"><div class="vlabel">輔助服務市場</div><div class="vamt">NT$50–150 萬</div><div class="vcert"><span class="badge bw">中確定性</span> E-dReg 等</div></div>
-      <div class="vitem"><div class="vlabel">代金避免（不裝的代價）</div><div class="vamt">NT$1,000 萬</div><div class="vcert"><span class="badge bd">懲罰性上限</span> 確定發生</div></div>
+
+    <p class="txt-sm txt-m" style="margin-bottom:.75rem;">以下分為三層呈現：正向現金流（計入 IRR）、條件性現金流（需現場驗證）、及投資基準比較（避損，獨立呈現）。</p>
+
+    <h3 style="font-size:.875rem;color:var(--green);margin-bottom:.5rem;">▌ 正向現金流（計入基礎財務模型）</h3>
+    <div class="vstack" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+      <div class="vitem" style="border-left:3px solid var(--green);">
+        <div class="vlabel">義務回饋（累進方案 A）</div>
+        <div class="vamt">NT$115 萬/年</div>
+        <div class="vcert"><span class="badge bg">高確定性</span> 台電制度保障</div>
+      </div>
+      <div class="vitem" style="border-left:3px solid var(--green);">
+        <div class="vlabel">夏月 TOU 套利</div>
+        <div class="vamt">NT$137 萬/年</div>
+        <div class="vcert"><span class="badge bg">高確定性</span> 104 天，一充一放</div>
+      </div>
+      <div class="vitem" style="border-left:3px solid var(--green);">
+        <div class="vlabel">非夏月 TOU 套利</div>
+        <div class="vamt">NT$84 萬/年</div>
+        <div class="vcert"><span class="badge bg">高確定性</span> 146 天，二充二放</div>
+      </div>
     </div>
-    <div class="box box-info">⚡ <strong>核心論點</strong>：儲能投資不是單一用途，而是「義務履約 × 電價套利 × 需量管理 × 備援韌性」的疊加組合。只拿單一維度評估會嚴重低估 ROI。</div>
+
+    <div class="box box-tip" style="margin:.75rem 0;">
+      <strong>⚡ 為何義務回饋與 TOU 套利可以同時發生（重要說明）</strong><br>
+      台電義務儲能需量反應方案屬於<strong>用戶自主排程型</strong>——台電不發調度指令，用戶自行決定在 18:00–20:00 放電，放電後台電依累計度數給予電費折抵。義務放電時段（18:00–20:00）恰好落在夏月固定尖峰（16:00–22:00）與非夏月半尖峰（14:00–24:00）的重疊區間內。因此，這 2 小時的<strong>同一個放電動作</strong>同時計入義務回饋小時數，並替代了高價尖峰電費。這是兩個收益流共用同一次物理動作，並非兩個競爭操作。
+    </div>
+
+    <h3 style="font-size:.875rem;color:var(--amber);margin:.75rem 0 .5rem;">▌ 條件性現金流（需現場驗證，不計入基礎模型 IRR）</h3>
+    <div class="vstack" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+      <div class="vitem" style="border-left:3px solid var(--amber);">
+        <div class="vlabel">需量管理節費</div>
+        <div class="vamt">NT$228 萬/年</div>
+        <div class="vcert"><span class="badge bw">需現場驗證</span> 降契約容量 1 MW</div>
+        <div style="font-size:.72rem;color:var(--amber);margin-top:.4rem;">⚠️ 前提：BESS 放電後廠區淨峰值仍穩定低於目標契約容量，需提交實測負載曲線</div>
+      </div>
+      <div class="vitem" style="border-left:3px solid var(--amber);opacity:.75;">
+        <div class="vlabel">輔助服務市場（E-dReg 等）</div>
+        <div class="vamt">NT$50–150 萬/年</div>
+        <div class="vcert"><span class="badge bw">附加收益</span> 容量切分後才適用</div>
+        <div style="font-size:.72rem;color:var(--amber);margin-top:.4rem;">⚠️ 義務履約容量不得重複申報輔助服務。僅適用於超出義務量的商業區容量。1 MW 義務最低配置案場不適用。</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:.875rem;color:var(--red);margin:.75rem 0 .5rem;">▌ 投資基準比較（避損性質，獨立呈現，不計入 IRR 分子）</h3>
+    <table>
+      <thead><tr><th>比較基準</th><th>年金額</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>不履約代金</td><td style="color:var(--red);font-weight:700;">NT$1,000 萬/年</td><td>1,000 kW × 2,500 度 × 4 元/度，每年持續付出，無法換得任何資產</td></tr>
+        <tr><td>購買綠電憑證（替代方案）</td><td style="font-weight:700;">NT$562 萬/年（估）</td><td>1,000 kW 義務容量換算約 250 萬 kWh，按市場均價 2.25 元/kWh 計</td></tr>
+      </tbody>
+    </table>
+    <div class="box box-danger" style="margin:.75rem 0;">
+      代金是「避損」（Avoided Cost），財務性質不同於現金流入。儲能方案的核心 IRR（約 30%）計算僅涵蓋正向現金流（義務回饋＋TOU 套利），代金比較用於說明「不裝的代價」，作為決策門檻，不應列入 IRR 分子。
+    </div>
+
+    <div class="box box-info" style="margin-top:.5rem;">⚡ <strong>核心論點</strong>：1 MW/2 MWh 義務最低配置的基礎 IRR≈30% 僅來自高確定性的義務回饋與 TOU 套利；若製程條件許可，需量管理可進一步將回收年限壓至 1.8 年。兩者均基於台電公告費率，不依賴輔助服務市場收益。</div>
   </div>
 
   <div class="card">
@@ -382,11 +429,13 @@ tr:hover td{background:var(--primary-light);}
         <h4>情境 A：義務回饋 ＋ TOU 套利</h4>
         <div class="sn">NT$321 萬</div>
         <div class="ss">年淨效益 ｜ 回收 <strong>3.1 年</strong> ｜ IRR≈30%</div>
+        <div style="font-size:.72rem;color:var(--green);margin-top:.5rem;">✅ 基礎模型，高確定性，不依賴需量管理或輔助服務</div>
       </div>
       <div class="sc-card">
         <h4>情境 B：+ 需量管理</h4>
         <div class="sn">NT$549 萬</div>
         <div class="ss">年淨效益 ｜ 回收 <strong>1.8 年</strong> ｜ IRR≈55%</div>
+        <div style="font-size:.72rem;color:var(--amber);margin-top:.5rem;">⚠️ 需提交實測負載曲線，確認 BESS 放電後淨峰值仍穩定低於目標契約容量</div>
       </div>
       <div class="sc-card">
         <h4>情境 C：對比繳代金</h4>
@@ -394,7 +443,7 @@ tr:hover td{background:var(--primary-light);}
         <div class="ss">年效益差距 ｜ 回收 &lt;1 年 ｜ IRR&gt;100%</div>
       </div>
     </div>
-    <div class="box box-warn">⚠️ 情境 C 是懲罰性上限比較，不是正常採購基準。多數企業以情境 A 或 B 做財務決策。</div>
+    <div class="box box-warn">⚠️ <strong>情境 C 說明</strong>：代金屬於「避損」（Avoided Cost），財務性質與現金流入不同，不計入情境 A/B 的 IRR 計算分子。情境 C 獨立列出，用於說明「不裝儲能的決策代價」，作為投資門檻的比較基準，非正常採購財務模型。</div>
 
     <h3 class="mt2">套利策略計算明細</h3>
     <div class="box box-info">
@@ -1060,8 +1109,10 @@ function openReport(type) {
   <h3>重要提醒</h3>
   <ul style="padding-left:1.2rem;font-size:.85rem;color:var(--muted);">
     <li>本報告財務數字以 10 MW 基礎案例等比例換算，實際效益依場域條件、製程負載特性調整。</li>
+    <li>IRR/回收年限之計算基礎為<strong>正向現金流</strong>（義務回饋＋TOU 套利），不含代金避損。代金數字列於「不履約代金試算」欄位，作為決策參考基準，非 IRR 計算分子。</li>
     <li>電費費率以台電 114/10/1 公告為準，未來費率調整將影響套利效益。</li>
-    <li>輔助服務市場收益（E-dReg 等）未納入本估算，為附加收益。</li>
+    <li>輔助服務市場收益（E-dReg 等）未納入本估算。義務履約容量不得重複申報輔助服務；若規劃超出義務量的商業區容量，可另行評估容量切分方案。</li>
+    <li>需量管理節費（情境 B）需以實測廠區負載曲線確認，BESS 放電後淨需量峰值須穩定低於目標契約容量，方能計入財務模型。</li>
     <li>若廠區位於工業區/科學園區，建議申請經濟部產業儲能補助（最高 50% CAPEX）。</li>
     <li>系統容量 &gt; 600 kWh 須申請消防安全審查，建議設計階段即規劃，時程約 3–6 個月。</li>
     <li>能源管理法修正草案（115/5/14 行政院通過）仍在立法院審議，通過後可能擴大納管範圍。</li>
