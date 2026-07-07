@@ -580,8 +580,8 @@
       <div class="slide-body two-col-wide">
         <div class="big-callout">
           <p>建議主方案</p>
-          <div class="answer">168 kW / 337.68 kWh</div>
-          <p class="muted">ATMOCE M-ELV BattBank，3 組 cluster，21 個 pack。保留 60~120 kW 超約管理功率，並支援夏月 1 次、非夏月 2 次價差循環。</p>
+          <div class="answer">21 packs / 337.68 kWh</div>
+          <p class="muted">ATMOCE MS-16K-U，每 pack 16.08 kWh、8 kVA 連續輸出、10 kVA 最大輸出；建議 3 個滿配 7-pack stack，保留 60~120 kW 超約管理功率，並支援夏月 1 次、非夏月 2 次價差循環。</p>
         </div>
         <div class="chart" aria-label="契約容量與儲能管理示意">
           <svg viewBox="0 0 560 340" role="img">
@@ -625,10 +625,10 @@
           <small>以 1,200 kW 的 5~10% 作為突發負載安全邊際；EMS 只在預測超約時介入。</small>
         </div>
         <div class="metric amber">
-          <div class="label">主方案 PCS 連續功率</div>
+          <div class="label">主方案額定輸出</div>
           <div>
             <span class="value">168</span>
-            <span class="unit">kW</span>
+            <span class="unit">kVA</span>
           </div>
           <small>比 120 kW 管理功率多約 40% 餘裕，避免模組限流、溫度降額或短時尖峰造成失守。</small>
         </div>
@@ -691,7 +691,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">ATMOCE Sizing</p>
-          <h2>建議採 3 組 cluster：滿足 120 kW 管理功率，也留下套利與降額空間</h2>
+          <h2>建議採 21 packs：用 3 個滿配 stack 滿足 120 kW 管理功率</h2>
         </div>
         <div class="meta">ATMOCE M-ELV<br>BattBank</div>
       </div>
@@ -701,29 +701,35 @@
             <thead>
               <tr>
                 <th>方案</th>
-                <th>連續功率</th>
+                <th>連續 / 最大功率</th>
                 <th>名目容量</th>
                 <th>判斷</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>2 cluster</td>
-                <td>112 kW</td>
+                <td>8 packs</td>
+                <td>64 / 80 kVA</td>
+                <td>128.64 kWh</td>
+                <td>只適合 60 kW 等級事件管理</td>
+              </tr>
+              <tr>
+                <td>14 packs<br><small>2 個滿配 stack</small></td>
+                <td>112 / 140 kVA</td>
                 <td>225.12 kWh</td>
-                <td>可管 60~100 kW，對 120 kW 偏緊</td>
+                <td>短時可碰 120 kW，但 15 分鐘連續管理偏緊</td>
               </tr>
               <tr>
-                <td><strong>3 cluster</strong></td>
-                <td><strong>168 kW</strong></td>
+                <td>15 packs</td>
+                <td>120 / 150 kVA</td>
+                <td>241.20 kWh</td>
+                <td>理論最低可守 120 kW；需 3-stack 架構</td>
+              </tr>
+              <tr>
+                <td><strong>21 packs</strong><br><small>3 個滿配 stack</small></td>
+                <td><strong>168 / 210 kVA</strong></td>
                 <td><strong>337.68 kWh</strong></td>
-                <td><strong>主方案；可守 120 kW 並做價差套利</strong></td>
-              </tr>
-              <tr>
-                <td>4 cluster</td>
-                <td>224 kW</td>
-                <td>450.24 kWh</td>
-                <td>收益更高，但需確認空間與投資門檻</td>
+                <td><strong>主方案；有降額、溫度與套利空間</strong></td>
               </tr>
             </tbody>
           </table>
@@ -731,9 +737,10 @@
         <div class="panel">
           <h3>採用假設</h3>
           <ul class="list">
-            <li>每組 cluster 以 7 個 pack 估算。</li>
-            <li>每個 pack 以 16.08 kWh、8 kVA 連續輸出估算。</li>
-            <li>每組 cluster 約 112.56 kWh、56 kW；3 組合計 337.68 kWh、168 kW。</li>
+            <li>產品型號 MS-16K-U，化學系統為磷酸鐵鋰。</li>
+            <li>每 pack 為 16.08 kWh、8 kVA 額定輸出、10 kVA 最大輸出。</li>
+            <li>每個 stack 最多堆疊 7 packs；滿配 stack 約 112.56 kWh、56 kVA 額定輸出。</li>
+            <li>21 packs 合計 337.68 kWh、168 kVA 額定輸出、210 kVA 最大輸出。</li>
             <li>最終容量需以 ATMOCE 正式型錄、報價書與現場單線圖覆核。</li>
           </ul>
         </div>
@@ -755,7 +762,7 @@
           <ul class="list">
             <li>預警帶：1,080~1,140 kW，依現場負載變動速度微調。</li>
             <li>放電觸發：若預測本 15 分鐘需量將超過 1,200 kW，立即放電。</li>
-            <li>最大事件放電：120 kW；必要時可短時拉到 168 kW 系統連續能力內。</li>
+            <li>最大事件放電：120 kW；主方案額定 168 kVA，必要時仍有降額空間。</li>
             <li>SOC 保留：至少 20%，並保留 30~45 kWh 作為尖峰突發事件能量。</li>
           </ul>
         </div>
@@ -852,7 +859,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">Revenue Estimate</p>
-          <h2>3 cluster 主方案的平日價差套利毛收益約 43.1 萬元/年</h2>
+          <h2>21-pack 主方案的平日價差套利毛收益約 43.1 萬元/年</h2>
         </div>
         <div class="meta">337.68 kWh 名目<br>270.14 kWh 可用/循環</div>
       </div>
@@ -933,7 +940,7 @@
               </tr>
               <tr>
                 <td>尖離峰價差套利</td>
-                <td>3 cluster，平日循環，RTE 90%</td>
+                <td>21 packs，平日循環，RTE 90%</td>
                 <td>431,240 元/年</td>
               </tr>
               <tr>
@@ -964,7 +971,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">Sensitivity</p>
-          <h2>容量每增加 1 組 cluster，價差套利約增加 14.4 萬元/年</h2>
+          <h2>按 pack 數設計時，15 packs 是最低門檻；21 packs 是保守主方案</h2>
         </div>
         <div class="meta">同一效率與<br>平日循環假設</div>
       </div>
@@ -974,29 +981,35 @@
             <thead>
               <tr>
                 <th>容量方案</th>
-                <th>連續功率</th>
+                <th>連續 / 最大功率</th>
                 <th>可用放電/循環</th>
                 <th>套利毛收益</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>2 cluster</td>
-                <td>112 kW</td>
+                <td>8 packs</td>
+                <td>64 / 80 kVA</td>
+                <td>102.91 kWh</td>
+                <td>164,282 元/年</td>
+              </tr>
+              <tr>
+                <td>14 packs</td>
+                <td>112 / 140 kVA</td>
                 <td>180.10 kWh</td>
                 <td>287,493 元/年</td>
               </tr>
               <tr>
-                <td><strong>3 cluster</strong></td>
-                <td><strong>168 kW</strong></td>
-                <td><strong>270.14 kWh</strong></td>
-                <td><strong>431,240 元/年</strong></td>
+                <td>15 packs</td>
+                <td>120 / 150 kVA</td>
+                <td>192.96 kWh</td>
+                <td>308,029 元/年</td>
               </tr>
               <tr>
-                <td>4 cluster</td>
-                <td>224 kW</td>
-                <td>360.19 kWh</td>
-                <td>574,987 元/年</td>
+                <td><strong>21 packs</strong></td>
+                <td><strong>168 / 210 kVA</strong></td>
+                <td><strong>270.14 kWh</strong></td>
+                <td><strong>431,240 元/年</strong></td>
               </tr>
             </tbody>
           </table>
@@ -1004,9 +1017,9 @@
         <div class="panel">
           <h3>建議決策口徑</h3>
           <ul class="list">
-            <li>若只管 60 kW：2 cluster 可行，但 120 kW 事件時風險偏高。</li>
-            <li>若要守 120 kW 並做每日循環：3 cluster 是合理起點。</li>
-            <li>若業主重視收益而非最低 CapEx：可把 4 cluster 納入報價比較。</li>
+            <li>若只管 60 kW：8 packs 可行，但不適合 120 kW 管理。</li>
+            <li>若要守 120 kW：15 packs 是額定功率最低門檻。</li>
+            <li>若要兼顧降額、維護與套利：21 packs、3 個滿配 stack 較適合正式報價。</li>
           </ul>
         </div>
       </div>
@@ -1073,7 +1086,7 @@
           <div class="step">
             <div class="num">3</div>
             <h3>方案報價</h3>
-            <p>向 ATMOCE/系統商取得 3 與 4 cluster 報價及保固條款。</p>
+            <p>向 ATMOCE/系統商取得 15-pack 與 21-pack 報價及保固條款。</p>
           </div>
           <div class="step">
             <div class="num">4</div>
@@ -1087,7 +1100,7 @@
           </div>
         </div>
       </div>
-      <div class="footer"><span>關鍵決策：先選 3 cluster 主方案；若報價後回收年限可接受，再評估升級 4 cluster。</span><span>11</span></div>
+      <div class="footer"><span>關鍵決策：15 packs 是最低門檻；21 packs 是本案建議主方案。</span><span>11</span></div>
     </section>
 
     <section class="slide" data-title="來源與假設">
@@ -1113,6 +1126,7 @@
           <ul class="list">
             <li>夏月：5/16~10/15；以 2026 年平日 109 天估算。</li>
             <li>非夏月：2026 年平日 152 天估算。</li>
+            <li>ATMOCE MS-16K-U：16.08 kWh/pack、8 kVA 額定、10 kVA 最大、最多 7 packs/stack。</li>
             <li>電池可用放電容量：名目容量 80%；AC-AC 往返效率：90%。</li>
             <li>未納入設備成本、工程費、消防、維運、衰退、稅費、停機、週末與國定假日收益。</li>
           </ul>
