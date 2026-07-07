@@ -579,9 +579,9 @@
       </div>
       <div class="slide-body two-col-wide">
         <div class="big-callout">
-          <p>建議主方案</p>
-          <div class="answer">21 packs / 337.68 kWh</div>
-          <p class="muted">ATMOCE MS-16K-U，每 pack 16.08 kWh、8 kVA 連續輸出、10 kVA 最大輸出；建議 3 個滿配 7-pack stack，保留 60~120 kW 超約管理功率，並支援夏月 1 次、非夏月 2 次價差循環。</p>
+          <p>反推建議</p>
+          <div class="answer">2 full stacks</div>
+          <p class="muted">ATMOCE MS-16K-U 以 7 packs 為滿配 stack。2 個滿配 stack 為 112 kVA / 225.12 kWh，剛好落在 1,200 kW 契約容量的 5~10% 超約管理預度；3 個滿配 stack 則是收益與降額加強方案。</p>
         </div>
         <div class="chart" aria-label="契約容量與儲能管理示意">
           <svg viewBox="0 0 560 340" role="img">
@@ -611,7 +611,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">Executive Decision</p>
-          <h2>容量不是用 300 kW 連續削峰設計，而是用 60~120 kW 事件型保留功率管理超約</h2>
+          <h2>用 ATMOCE 滿配 stack 反推：2 stack 是超約管理基準，3 stack 是收益加強方案</h2>
         </div>
         <div class="meta">契約容量<br>1,500 → 1,200 kW</div>
       </div>
@@ -625,20 +625,20 @@
           <small>以 1,200 kW 的 5~10% 作為突發負載安全邊際；EMS 只在預測超約時介入。</small>
         </div>
         <div class="metric amber">
-          <div class="label">主方案額定輸出</div>
+          <div class="label">超約管理基準</div>
           <div>
-            <span class="value">168</span>
-            <span class="unit">kVA</span>
+            <span class="value">2</span>
+            <span class="unit">stacks</span>
           </div>
-          <small>比 120 kW 管理功率多約 40% 餘裕，避免模組限流、溫度降額或短時尖峰造成失守。</small>
+          <small>112 kVA 額定輸出，約等於契約容量的 9.3%；可連續吸收至約 1,312 kW 的 15 分鐘平均需量。</small>
         </div>
         <div class="metric coral">
-          <div class="label">年度可量化毛效益</div>
+          <div class="label">2~3 stack 年度毛效益</div>
           <div>
-            <span class="value">112</span>
+            <span class="value">97~112</span>
             <span class="unit">萬元/年</span>
           </div>
-          <small>約 68.6 萬元基本電費節省 + 43.1 萬元平日價差套利，不含稅費、維運、衰退與停機。</small>
+          <small>基本電費節省約 68.6 萬元，加上平日價差套利約 28.7~43.1 萬元；未扣稅費、維運、衰退與停機。</small>
         </div>
       </div>
       <div class="footer"><span>設計原則：先守住契約容量，再追求每日價差循環。</span><span>2</span></div>
@@ -691,7 +691,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">ATMOCE Sizing</p>
-          <h2>建議採 21 packs：用 3 個滿配 stack 滿足 120 kW 管理功率</h2>
+          <h2>以 1、2、3 個滿配 stack 反推容量、收益與可防超約預度</h2>
         </div>
         <div class="meta">ATMOCE M-ELV<br>BattBank</div>
       </div>
@@ -700,36 +700,38 @@
           <table>
             <thead>
               <tr>
-                <th>方案</th>
+                <th>滿配 stack</th>
                 <th>連續 / 最大功率</th>
                 <th>名目容量</th>
+                <th>可防超約預度</th>
+                <th>套利毛收益</th>
                 <th>判斷</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>8 packs</td>
-                <td>64 / 80 kVA</td>
-                <td>128.64 kWh</td>
-                <td>只適合 60 kW 等級事件管理</td>
+                <td>1 stack<br><small>7 packs</small></td>
+                <td>56 / 70 kVA</td>
+                <td>112.56 kWh</td>
+                <td>56 kW，4.7%<br><small>短時最高 70 kW</small></td>
+                <td>143,747 元/年</td>
+                <td>低於 5~10% 目標下緣，僅適合輕度事件管理</td>
               </tr>
               <tr>
-                <td>14 packs<br><small>2 個滿配 stack</small></td>
+                <td><strong>2 stacks</strong><br><small>14 packs</small></td>
                 <td>112 / 140 kVA</td>
                 <td>225.12 kWh</td>
-                <td>短時可碰 120 kW，但 15 分鐘連續管理偏緊</td>
+                <td><strong>112 kW，9.3%</strong><br><small>短時最高 140 kW</small></td>
+                <td><strong>287,493 元/年</strong></td>
+                <td><strong>最貼近 60~120 kW 預度，建議作降約基準</strong></td>
               </tr>
               <tr>
-                <td>15 packs</td>
-                <td>120 / 150 kVA</td>
-                <td>241.20 kWh</td>
-                <td>理論最低可守 120 kW；需 3-stack 架構</td>
-              </tr>
-              <tr>
-                <td><strong>21 packs</strong><br><small>3 個滿配 stack</small></td>
-                <td><strong>168 / 210 kVA</strong></td>
-                <td><strong>337.68 kWh</strong></td>
-                <td><strong>主方案；有降額、溫度與套利空間</strong></td>
+                <td>3 stacks<br><small>21 packs</small></td>
+                <td>168 / 210 kVA</td>
+                <td>337.68 kWh</td>
+                <td>168 kW，14.0%<br><small>短時最高 210 kW</small></td>
+                <td>431,240 元/年</td>
+                <td>超過原 5~10% 預度，適合作收益、降額與維護餘裕方案</td>
               </tr>
             </tbody>
           </table>
@@ -739,8 +741,9 @@
           <ul class="list">
             <li>產品型號 MS-16K-U，化學系統為磷酸鐵鋰。</li>
             <li>每 pack 為 16.08 kWh、8 kVA 額定輸出、10 kVA 最大輸出。</li>
-            <li>每個 stack 最多堆疊 7 packs；滿配 stack 約 112.56 kWh、56 kVA 額定輸出。</li>
-            <li>21 packs 合計 337.68 kWh、168 kVA 額定輸出、210 kVA 最大輸出。</li>
+            <li>每個滿配 stack 為 7 packs，約 112.56 kWh、56 kVA 額定輸出、70 kVA 最大輸出。</li>
+            <li>2 stacks 對應 112 kW 連續超約預度，落在 60~120 kW 目標範圍內。</li>
+            <li>3 stacks 對應 168 kW 連續超約預度，適合提高套利量與保守降額空間。</li>
             <li>最終容量需以 ATMOCE 正式型錄、報價書與現場單線圖覆核。</li>
           </ul>
         </div>
@@ -762,7 +765,7 @@
           <ul class="list">
             <li>預警帶：1,080~1,140 kW，依現場負載變動速度微調。</li>
             <li>放電觸發：若預測本 15 分鐘需量將超過 1,200 kW，立即放電。</li>
-            <li>最大事件放電：120 kW；主方案額定 168 kVA，必要時仍有降額空間。</li>
+            <li>最大事件放電：2 stacks 建議以 112 kW 額定輸出作連續管理；3 stacks 可放寬至 120 kW 以上並保留降額空間。</li>
             <li>SOC 保留：至少 20%，並保留 30~45 kWh 作為尖峰突發事件能量。</li>
           </ul>
         </div>
@@ -859,34 +862,42 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">Revenue Estimate</p>
-          <h2>21-pack 主方案的平日價差套利毛收益約 43.1 萬元/年</h2>
+          <h2>價差套利收益隨滿配 stack 線性增加：每 stack 約 14.4 萬元/年</h2>
         </div>
-        <div class="meta">337.68 kWh 名目<br>270.14 kWh 可用/循環</div>
+        <div class="meta">每滿配 stack<br>112.56 kWh 名目</div>
       </div>
       <div class="slide-body two-col">
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>項目</th>
-                <th>公式</th>
-                <th>毛收益</th>
+                <th>方案</th>
+                <th>可用放電/循環</th>
+                <th>夏月收益</th>
+                <th>非夏月收益</th>
+                <th>套利毛收益</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>夏月 1 充 1 放</td>
-                <td>270.14 × (9.39 - 2.53 ÷ 0.90) × 109 平日</td>
+                <td>1 stack</td>
+                <td>90.05 kWh</td>
+                <td>64,573 元/年</td>
+                <td>79,173 元/年</td>
+                <td>143,747 元/年</td>
+              </tr>
+              <tr>
+                <td><strong>2 stacks</strong></td>
+                <td><strong>180.10 kWh</strong></td>
+                <td><strong>129,147 元/年</strong></td>
+                <td><strong>158,347 元/年</strong></td>
+                <td><strong>287,493 元/年</strong></td>
+              </tr>
+              <tr>
+                <td>3 stacks</td>
+                <td>270.14 kWh</td>
                 <td>193,720 元/年</td>
-              </tr>
-              <tr>
-                <td>非夏月 2 充 2 放</td>
-                <td>270.14 × (5.47 - 2.32 ÷ 0.90) × 2 × 152 平日</td>
                 <td>237,520 元/年</td>
-              </tr>
-              <tr>
-                <td><strong>價差套利合計</strong></td>
-                <td>夏月 + 非夏月</td>
                 <td><strong>431,240 元/年</strong></td>
               </tr>
             </tbody>
@@ -899,14 +910,14 @@
             <line x1="58" y1="226" x2="478" y2="226" stroke="#d8e0dc"/>
             <line x1="58" y1="180" x2="478" y2="180" stroke="#d8e0dc"/>
             <line x1="58" y1="134" x2="478" y2="134" stroke="#d8e0dc"/>
-            <rect x="112" y="137" width="86" height="135" fill="#f2ab2e"/>
-            <rect x="252" y="107" width="86" height="165" fill="#0f8f70"/>
+            <rect x="112" y="195" width="86" height="77" fill="#f2ab2e"/>
+            <rect x="252" y="119" width="86" height="153" fill="#0f8f70"/>
             <rect x="392" y="42" width="86" height="230" fill="#e25f48"/>
-            <text x="110" y="306" fill="#5e6f73" font-size="15">夏月</text>
-            <text x="242" y="306" fill="#5e6f73" font-size="15">非夏月</text>
-            <text x="390" y="306" fill="#5e6f73" font-size="15">合計</text>
-            <text x="95" y="126" fill="#10252c" font-size="17" font-weight="800">19.4 萬</text>
-            <text x="235" y="96" fill="#10252c" font-size="17" font-weight="800">23.8 萬</text>
+            <text x="104" y="306" fill="#5e6f73" font-size="15">1 stack</text>
+            <text x="244" y="306" fill="#5e6f73" font-size="15">2 stacks</text>
+            <text x="384" y="306" fill="#5e6f73" font-size="15">3 stacks</text>
+            <text x="95" y="184" fill="#10252c" font-size="17" font-weight="800">14.4 萬</text>
+            <text x="235" y="108" fill="#10252c" font-size="17" font-weight="800">28.7 萬</text>
             <text x="372" y="30" fill="#10252c" font-size="17" font-weight="800">43.1 萬</text>
           </svg>
         </div>
@@ -927,25 +938,29 @@
           <table>
             <thead>
               <tr>
-                <th>收益來源</th>
-                <th>估算方式</th>
+                <th>方案</th>
+                <th>基本電費節省</th>
+                <th>價差套利</th>
                 <th>年化毛效益</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>基本電費節省</td>
-                <td>300 kW × (223.6 × 5 + 166.9 × 7)</td>
+                <td>1 stack</td>
                 <td>685,890 元/年</td>
+                <td>143,747 元/年</td>
+                <td>829,637 元/年<br><small>低於預度目標，降約風險較高</small></td>
               </tr>
               <tr>
-                <td>尖離峰價差套利</td>
-                <td>21 packs，平日循環，RTE 90%</td>
+                <td><strong>2 stacks</strong></td>
+                <td><strong>685,890 元/年</strong></td>
+                <td><strong>287,493 元/年</strong></td>
+                <td><strong>973,383 元/年</strong></td>
+              </tr>
+              <tr>
+                <td>3 stacks</td>
+                <td>685,890 元/年</td>
                 <td>431,240 元/年</td>
-              </tr>
-              <tr>
-                <td><strong>合計</strong></td>
-                <td>未扣 O&M、衰退、稅費與停機</td>
                 <td><strong>1,117,130 元/年</strong></td>
               </tr>
             </tbody>
@@ -958,9 +973,9 @@
             <small>此收益成立前提：1,200 kW 可被 EMS 穩定守住。</small>
           </div>
           <div class="metric amber">
-            <div class="label">主方案套利可用容量</div>
-            <div><span class="value">270</span><span class="unit"> kWh</span></div>
-            <small>以 80% 可用放電容量估算，仍需保留事件管理 SOC。</small>
+            <div class="label">建議基準套利可用容量</div>
+            <div><span class="value">180</span><span class="unit"> kWh</span></div>
+            <small>2 stacks 以 80% 可用放電容量估算；3 stacks 可提升到 270.14 kWh。</small>
           </div>
         </div>
       </div>
@@ -971,7 +986,7 @@
       <div class="slide-header">
         <div>
           <p class="eyebrow">Sensitivity</p>
-          <h2>按 pack 數設計時，15 packs 是最低門檻；21 packs 是保守主方案</h2>
+          <h2>決策建議：先用 2 stack 守住降約，再視收益要求升級到 3 stack</h2>
         </div>
         <div class="meta">同一效率與<br>平日循環假設</div>
       </div>
@@ -980,36 +995,34 @@
           <table>
             <thead>
               <tr>
-                <th>容量方案</th>
-                <th>連續 / 最大功率</th>
-                <th>可用放電/循環</th>
+                <th>方案</th>
+                <th>可防超約預度</th>
+                <th>可承受 15 分鐘原始需量</th>
                 <th>套利毛收益</th>
+                <th>建議用途</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>8 packs</td>
-                <td>64 / 80 kVA</td>
-                <td>102.91 kWh</td>
-                <td>164,282 元/年</td>
+                <td>1 stack</td>
+                <td>56 kW，4.7%</td>
+                <td>約 1,256 kW<br><small>短時最高 1,270 kW</small></td>
+                <td>143,747 元/年</td>
+                <td>試辦或輕度削峰，不建議作 1,200 kW 降約保證</td>
               </tr>
               <tr>
-                <td>14 packs</td>
-                <td>112 / 140 kVA</td>
-                <td>180.10 kWh</td>
-                <td>287,493 元/年</td>
+                <td><strong>2 stacks</strong></td>
+                <td><strong>112 kW，9.3%</strong></td>
+                <td><strong>約 1,312 kW</strong><br><small>短時最高 1,340 kW</small></td>
+                <td><strong>287,493 元/年</strong></td>
+                <td><strong>建議基準方案，符合 5~10% 預度</strong></td>
               </tr>
               <tr>
-                <td>15 packs</td>
-                <td>120 / 150 kVA</td>
-                <td>192.96 kWh</td>
-                <td>308,029 元/年</td>
-              </tr>
-              <tr>
-                <td><strong>21 packs</strong></td>
-                <td><strong>168 / 210 kVA</strong></td>
-                <td><strong>270.14 kWh</strong></td>
+                <td>3 stacks</td>
+                <td>168 kW，14.0%</td>
+                <td>約 1,368 kW<br><small>短時最高 1,410 kW</small></td>
                 <td><strong>431,240 元/年</strong></td>
+                <td>收益加強、溫度降額、維護備援與負載成長餘裕</td>
               </tr>
             </tbody>
           </table>
@@ -1017,9 +1030,9 @@
         <div class="panel">
           <h3>建議決策口徑</h3>
           <ul class="list">
-            <li>若只管 60 kW：8 packs 可行，但不適合 120 kW 管理。</li>
-            <li>若要守 120 kW：15 packs 是額定功率最低門檻。</li>
-            <li>若要兼顧降額、維護與套利：21 packs、3 個滿配 stack 較適合正式報價。</li>
+            <li>若只想降低初期 CapEx：1 stack 不足以支撐 5~10% 預度，不建議作正式降約依據。</li>
+            <li>若目標是契約容量降到 1,200 kW 並保留 60~120 kW 預度：2 stacks 是最貼近的方案。</li>
+            <li>若業主希望提高套利收益、降低降額風險或預留負載成長：3 stacks 應列為替代報價。</li>
           </ul>
         </div>
       </div>
@@ -1086,7 +1099,7 @@
           <div class="step">
             <div class="num">3</div>
             <h3>方案報價</h3>
-            <p>向 ATMOCE/系統商取得 15-pack 與 21-pack 報價及保固條款。</p>
+            <p>向 ATMOCE/系統商取得 2-stack 與 3-stack 報價及保固條款。</p>
           </div>
           <div class="step">
             <div class="num">4</div>
@@ -1100,7 +1113,7 @@
           </div>
         </div>
       </div>
-      <div class="footer"><span>關鍵決策：15 packs 是最低門檻；21 packs 是本案建議主方案。</span><span>11</span></div>
+      <div class="footer"><span>關鍵決策：2 stacks 是超約管理基準；3 stacks 是收益與保守餘裕方案。</span><span>11</span></div>
     </section>
 
     <section class="slide" data-title="來源與假設">
