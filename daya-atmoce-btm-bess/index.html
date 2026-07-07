@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>達亞光電 BTM 儲能容量與收益建議</title>
+  <style>
+    :root {
+      --ink: #10252c;
+      --muted: #5e6f73;
+      --paper: #f6f8f7;
+      --panel: #ffffff;
+      --line: #d8e0dc;
+      --green: #0f8f70;
+      --green-soft: #dff2ec;
+      --amber: #f2ab2e;
+      --amber-soft: #fff0c8;
+      --coral: #e25f48;
+      --coral-soft: #ffe3de;
+      --teal: #177f8f;
+      --blue: #4169a8;
+      --shadow: 0 18px 45px rgba(15, 45, 51, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+      letter-spacing: 0;
+      overflow: hidden;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(23, 127, 143, 0.35);
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 22px;
+      padding: 48px 64px 36px;
+      background:
+        linear-gradient(110deg, rgba(255,255,255,0.94), rgba(246,248,247,0.96)),
+        radial-gradient(circle at 12% 88%, rgba(15,143,112,0.08), transparent 34%),
+        radial-gradient(circle at 88% 12%, rgba(226,95,72,0.07), transparent 30%);
+      opacity: 0;
+      transform: translateX(36px);
+      pointer-events: none;
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--teal);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 980px;
+      font-size: clamp(42px, 6vw, 82px);
+    }
+
+    h2 {
+      max-width: 920px;
+      font-size: clamp(32px, 4vw, 56px);
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.65;
+      font-size: 21px;
+    }
+
+    small {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .slide-body {
+      min-height: 0;
+      display: grid;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .two-col {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+
+    .two-col-wide {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    }
+
+    .three-col {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .split-40 {
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    }
+
+    .panel,
+    .metric,
+    .note,
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 26px;
+    }
+
+    .metric {
+      min-height: 156px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .metric .value {
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 850;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .metric .unit {
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 650;
+    }
+
+    .metric.green {
+      border-color: rgba(15,143,112,0.22);
+      background: linear-gradient(180deg, #ffffff, var(--green-soft));
+    }
+
+    .metric.amber {
+      border-color: rgba(242,171,46,0.28);
+      background: linear-gradient(180deg, #ffffff, var(--amber-soft));
+    }
+
+    .metric.coral {
+      border-color: rgba(226,95,72,0.28);
+      background: linear-gradient(180deg, #ffffff, var(--coral-soft));
+    }
+
+    .big-callout {
+      padding: 34px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(16,37,44,0.95), rgba(23,127,143,0.92)),
+        linear-gradient(90deg, rgba(15,143,112,0.3), rgba(226,95,72,0.18));
+      border: 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .big-callout p,
+    .big-callout .muted {
+      color: rgba(255,255,255,0.82);
+    }
+
+    .big-callout .answer {
+      margin-top: 14px;
+      font-size: clamp(42px, 6vw, 74px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .accent {
+      color: var(--coral);
+    }
+
+    .ok {
+      color: var(--green);
+    }
+
+    .list {
+      display: grid;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      position: relative;
+      padding-left: 26px;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    .list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .table-wrap {
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 18px;
+      line-height: 1.45;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+      text-align: right;
+      vertical-align: top;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 14px;
+      text-transform: uppercase;
+      background: #f1f5f3;
+      letter-spacing: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .chart {
+      width: 100%;
+      min-height: 300px;
+      padding: 26px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--teal);
+    }
+
+    .swatch.green { background: var(--green); }
+    .swatch.amber { background: var(--amber); }
+    .swatch.coral { background: var(--coral); }
+    .swatch.blue { background: var(--blue); }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .step {
+      padding: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .step .num {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      color: #fff;
+      background: var(--teal);
+      border-radius: 50%;
+      font-weight: 800;
+    }
+
+    .formula {
+      padding: 18px 20px;
+      color: var(--ink);
+      background: #edf6f4;
+      border-left: 5px solid var(--green);
+      border-radius: 8px;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .nav {
+      position: fixed;
+      right: 24px;
+      bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 20;
+    }
+
+    .nav button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 8px 24px rgba(16,37,44,0.12);
+      cursor: pointer;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .nav button:disabled {
+      opacity: 0.38;
+      cursor: default;
+    }
+
+    .counter {
+      min-width: 56px;
+      padding: 10px 11px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 13px;
+      box-shadow: 0 8px 24px rgba(16,37,44,0.12);
+    }
+
+    .progress {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 5px;
+      background: rgba(16,37,44,0.08);
+      z-index: 21;
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--amber), var(--coral));
+      transition: width 220ms ease;
+    }
+
+    .compact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tagline {
+      max-width: 850px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: clamp(22px, 2.4vw, 31px);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .deck {
+        height: auto;
+        overflow: visible;
+      }
+
+      .slide {
+        position: relative;
+        min-height: 100vh;
+        display: none;
+        padding: 34px 22px 72px;
+        transform: none;
+      }
+
+      .slide.active {
+        display: grid;
+      }
+
+      .slide-header {
+        display: block;
+      }
+
+      .meta {
+        margin-top: 12px;
+        text-align: left;
+        white-space: normal;
+      }
+
+      .two-col,
+      .two-col-wide,
+      .three-col,
+      .split-40 {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .compact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      p,
+      .list li {
+        font-size: 18px;
+      }
+
+      table {
+        font-size: 15px;
+      }
+
+      th,
+      td {
+        padding: 12px 10px;
+      }
+    }
+
+    @media print {
+      body {
+        overflow: visible;
+        background: #fff;
+      }
+
+      .deck {
+        height: auto;
+        overflow: visible;
+      }
+
+      .slide {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        opacity: 1;
+        transform: none;
+        page-break-after: always;
+        pointer-events: auto;
+      }
+
+      .nav,
+      .progress {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <section class="slide active" data-title="封面">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">BTM BESS 技術與財務建議</p>
+          <h1>達亞光電<br>表後儲能容量與收益設計</h1>
+          <p class="tagline">契約容量由 1,500 kW 降至 1,200 kW；儲能以事件型超約管理為底線，尖離峰價差套利為附加收益。</p>
+        </div>
+        <div class="meta">版本：2026-07-07<br>高壓三段式時間電價</div>
+      </div>
+      <div class="slide-body two-col-wide">
+        <div class="big-callout">
+          <p>建議主方案</p>
+          <div class="answer">168 kW / 337.68 kWh</div>
+          <p class="muted">ATMOCE M-ELV BattBank，3 組 cluster，21 個 pack。保留 60~120 kW 超約管理功率，並支援夏月 1 次、非夏月 2 次價差循環。</p>
+        </div>
+        <div class="chart" aria-label="契約容量與儲能管理示意">
+          <svg viewBox="0 0 560 340" role="img">
+            <title>負載曲線與事件型儲能放電示意</title>
+            <rect x="45" y="34" width="470" height="240" fill="#f7faf9" stroke="#d8e0dc"/>
+            <line x1="45" y1="98" x2="515" y2="98" stroke="#e25f48" stroke-width="5"/>
+            <line x1="45" y1="126" x2="515" y2="126" stroke="#f2ab2e" stroke-width="3" stroke-dasharray="10 8"/>
+            <path d="M45,224 C90,228 132,220 160,218 C190,214 202,142 220,136 C245,128 275,122 310,116 C342,110 356,80 370,92 C386,108 396,154 420,162 C450,176 480,212 515,216" fill="none" stroke="#177f8f" stroke-width="5" stroke-linecap="round"/>
+            <path d="M350,116 C356,80 370,92 386,108" fill="none" stroke="#0f8f70" stroke-width="12" stroke-linecap="round" opacity="0.45"/>
+            <text x="52" y="88" fill="#e25f48" font-size="18" font-weight="800">1,200 kW</text>
+            <text x="52" y="119" fill="#a16a0a" font-size="16" font-weight="700">1,080~1,140 kW 預警帶</text>
+            <text x="345" y="64" fill="#0f8f70" font-size="17" font-weight="800">事件放電</text>
+            <text x="46" y="310" fill="#5e6f73" font-size="15">15 分鐘平均需量滾動預測</text>
+          </svg>
+          <div class="legend">
+            <span><i class="swatch coral"></i>契約上限</span>
+            <span><i class="swatch amber"></i>預警帶</span>
+            <span><i class="swatch"></i>現場負載</span>
+            <span><i class="swatch green"></i>儲能介入</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>Confidential working deck for discussion</span><span>1</span></div>
+    </section>
+
+    <section class="slide" data-title="決策摘要">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Executive Decision</p>
+          <h2>容量不是用 300 kW 連續削峰設計，而是用 60~120 kW 事件型保留功率管理超約</h2>
+        </div>
+        <div class="meta">契約容量<br>1,500 → 1,200 kW</div>
+      </div>
+      <div class="slide-body three-col">
+        <div class="metric green">
+          <div class="label">超約管理功率</div>
+          <div>
+            <span class="value">60~120</span>
+            <span class="unit">kW</span>
+          </div>
+          <small>以 1,200 kW 的 5~10% 作為突發負載安全邊際；EMS 只在預測超約時介入。</small>
+        </div>
+        <div class="metric amber">
+          <div class="label">主方案 PCS 連續功率</div>
+          <div>
+            <span class="value">168</span>
+            <span class="unit">kW</span>
+          </div>
+          <small>比 120 kW 管理功率多約 40% 餘裕，避免模組限流、溫度降額或短時尖峰造成失守。</small>
+        </div>
+        <div class="metric coral">
+          <div class="label">年度可量化毛效益</div>
+          <div>
+            <span class="value">112</span>
+            <span class="unit">萬元/年</span>
+          </div>
+          <small>約 68.6 萬元基本電費節省 + 43.1 萬元平日價差套利，不含稅費、維運、衰退與停機。</small>
+        </div>
+      </div>
+      <div class="footer"><span>設計原則：先守住契約容量，再追求每日價差循環。</span><span>2</span></div>
+    </section>
+
+    <section class="slide" data-title="現況判讀">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Load Pattern</p>
+          <h2>現況負載接近 1,200 kW，但不是長時間高於 1,200 kW</h2>
+        </div>
+        <div class="meta">來源：使用者提供<br>15 分鐘需量圖</div>
+      </div>
+      <div class="slide-body split-40">
+        <div class="panel">
+          <h3>從圖面可先得到三個判斷</h3>
+          <ul class="list">
+            <li>高負載多集中於日間生產時段，最高點接近 1,150~1,200 kW。</li>
+            <li>若契約降到 1,200 kW，主要風險是短時突發尖峰，不是全天 300 kW 缺口。</li>
+            <li>儲能若只做超約管理，能量需求很小；若要做電價套利，容量才需要放大。</li>
+          </ul>
+        </div>
+        <div class="chart" aria-label="日負載型態示意">
+          <svg viewBox="0 0 680 360" role="img">
+            <title>日負載型態與儲能用途</title>
+            <rect x="58" y="36" width="560" height="250" fill="#ffffff" stroke="#d8e0dc"/>
+            <g stroke="#d8e0dc" stroke-width="1">
+              <line x1="58" y1="236" x2="618" y2="236"/>
+              <line x1="58" y1="186" x2="618" y2="186"/>
+              <line x1="58" y1="136" x2="618" y2="136"/>
+              <line x1="58" y1="86" x2="618" y2="86"/>
+            </g>
+            <line x1="58" y1="88" x2="618" y2="88" stroke="#e25f48" stroke-width="5"/>
+            <path d="M58,224 C112,230 146,218 178,222 C211,226 220,205 234,202 C252,198 260,104 286,100 C320,96 338,118 365,112 C390,105 410,98 432,102 C456,106 470,86 488,96 C506,106 515,96 532,112 C548,128 560,160 585,176 C604,188 612,206 618,210" fill="none" stroke="#177f8f" stroke-width="5" stroke-linecap="round"/>
+            <rect x="452" y="68" width="82" height="42" fill="#dff2ec" stroke="#0f8f70"/>
+            <path d="M493 57 L508 84 L478 84 Z" fill="#0f8f70"/>
+            <text x="70" y="80" fill="#e25f48" font-size="17" font-weight="800">契約 1,200 kW</text>
+            <text x="454" y="133" fill="#0f8f70" font-size="16" font-weight="800">超約事件</text>
+            <text x="60" y="326" fill="#5e6f73" font-size="15">00:00</text>
+            <text x="250" y="326" fill="#5e6f73" font-size="15">09:00</text>
+            <text x="440" y="326" fill="#5e6f73" font-size="15">16:00</text>
+            <text x="590" y="326" fill="#5e6f73" font-size="15">24:00</text>
+          </svg>
+        </div>
+      </div>
+      <div class="footer"><span>正式設計前仍需取得至少 12 個月 15 分鐘 AMI 資料與當期電費單。</span><span>3</span></div>
+    </section>
+
+    <section class="slide" data-title="容量方案">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">ATMOCE Sizing</p>
+          <h2>建議採 3 組 cluster：滿足 120 kW 管理功率，也留下套利與降額空間</h2>
+        </div>
+        <div class="meta">ATMOCE M-ELV<br>BattBank</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>方案</th>
+                <th>連續功率</th>
+                <th>名目容量</th>
+                <th>判斷</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2 cluster</td>
+                <td>112 kW</td>
+                <td>225.12 kWh</td>
+                <td>可管 60~100 kW，對 120 kW 偏緊</td>
+              </tr>
+              <tr>
+                <td><strong>3 cluster</strong></td>
+                <td><strong>168 kW</strong></td>
+                <td><strong>337.68 kWh</strong></td>
+                <td><strong>主方案；可守 120 kW 並做價差套利</strong></td>
+              </tr>
+              <tr>
+                <td>4 cluster</td>
+                <td>224 kW</td>
+                <td>450.24 kWh</td>
+                <td>收益更高，但需確認空間與投資門檻</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>採用假設</h3>
+          <ul class="list">
+            <li>每組 cluster 以 7 個 pack 估算。</li>
+            <li>每個 pack 以 16.08 kWh、8 kVA 連續輸出估算。</li>
+            <li>每組 cluster 約 112.56 kWh、56 kW；3 組合計 337.68 kWh、168 kW。</li>
+            <li>最終容量需以 ATMOCE 正式型錄、報價書與現場單線圖覆核。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>資料來源：ATMOCE Business Owner 與 M-ELV BattBank 官方頁面。</span><span>4</span></div>
+    </section>
+
+    <section class="slide" data-title="控制邏輯">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">EMS Control</p>
+          <h2>超約管理必須用台電同口徑的 15 分鐘平均需量做滾動預測</h2>
+        </div>
+        <div class="meta">非持續削峰<br>事件觸發</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="panel">
+          <h3>建議控制參數</h3>
+          <ul class="list">
+            <li>預警帶：1,080~1,140 kW，依現場負載變動速度微調。</li>
+            <li>放電觸發：若預測本 15 分鐘需量將超過 1,200 kW，立即放電。</li>
+            <li>最大事件放電：120 kW；必要時可短時拉到 168 kW 系統連續能力內。</li>
+            <li>SOC 保留：至少 20%，並保留 30~45 kWh 作為尖峰突發事件能量。</li>
+          </ul>
+        </div>
+        <div class="chart" aria-label="EMS 控制流程">
+          <svg viewBox="0 0 620 360" role="img">
+            <title>EMS 控制流程</title>
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#5e6f73"/>
+              </marker>
+            </defs>
+            <g fill="#fff" stroke="#d8e0dc" stroke-width="2">
+              <rect x="40" y="60" width="150" height="78" rx="8"/>
+              <rect x="235" y="60" width="150" height="78" rx="8"/>
+              <rect x="430" y="60" width="150" height="78" rx="8"/>
+              <rect x="138" y="218" width="150" height="78" rx="8"/>
+              <rect x="332" y="218" width="150" height="78" rx="8"/>
+            </g>
+            <g fill="#10252c" font-size="18" font-weight="800">
+              <text x="66" y="93">AMI / 總表</text>
+              <text x="255" y="93">15 分鐘預測</text>
+              <text x="455" y="93">超約判斷</text>
+              <text x="164" y="250">PCS 放電</text>
+              <text x="365" y="250">SOC 回補</text>
+            </g>
+            <g fill="#5e6f73" font-size="14">
+              <text x="64" y="119">即時 kW</text>
+              <text x="255" y="119">rolling demand</text>
+              <text x="446" y="119">1,200 kW</text>
+              <text x="154" y="276">60~120 kW</text>
+              <text x="354" y="276">離峰充電</text>
+            </g>
+            <g stroke="#5e6f73" stroke-width="2.4" fill="none" marker-end="url(#arrow)">
+              <path d="M190,99 L235,99"/>
+              <path d="M385,99 L430,99"/>
+              <path d="M500,138 C500,188 405,200 405,218"/>
+              <path d="M332,257 L288,257"/>
+              <path d="M213,218 C213,178 305,158 305,138"/>
+            </g>
+            <rect x="426" y="156" width="98" height="34" rx="8" fill="#ffe3de"/>
+            <text x="443" y="179" fill="#e25f48" font-size="15" font-weight="800">只在事件時</text>
+          </svg>
+        </div>
+      </div>
+      <div class="footer"><span>若套利排程與超約管理衝突，EMS 應自動削減套利放電，優先守住契約容量。</span><span>5</span></div>
+    </section>
+
+    <section class="slide" data-title="電價策略">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">TOU Arbitrage</p>
+          <h2>尖離峰價差收益：夏月 1 充 1 放，非夏月 2 充 2 放</h2>
+        </div>
+        <div class="meta">高壓供電<br>三段式時間電價</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="chart" aria-label="每日充放電排程">
+          <svg viewBox="0 0 700 360" role="img">
+            <title>夏月與非夏月排程</title>
+            <rect x="58" y="56" width="560" height="70" fill="#edf6f4" stroke="#d8e0dc"/>
+            <rect x="268" y="56" width="164" height="70" fill="#fff0c8" stroke="#f2ab2e"/>
+            <rect x="432" y="56" width="140" height="70" fill="#ffe3de" stroke="#e25f48"/>
+            <text x="70" y="100" fill="#0f8f70" font-size="18" font-weight="800">充電 00:00~09:00</text>
+            <text x="442" y="100" fill="#e25f48" font-size="18" font-weight="800">放電 16:00~22:00</text>
+            <text x="60" y="40" fill="#10252c" font-size="18" font-weight="900">夏月</text>
+            <rect x="58" y="196" width="560" height="70" fill="#fff0c8" stroke="#d8e0dc"/>
+            <rect x="58" y="196" width="140" height="70" fill="#edf6f4" stroke="#0f8f70"/>
+            <rect x="292" y="196" width="70" height="70" fill="#edf6f4" stroke="#0f8f70"/>
+            <rect x="198" y="196" width="94" height="70" fill="#ffe3de" stroke="#e25f48"/>
+            <rect x="362" y="196" width="256" height="70" fill="#ffe3de" stroke="#e25f48"/>
+            <text x="72" y="239" fill="#0f8f70" font-size="16" font-weight="800">充 00~06</text>
+            <text x="208" y="239" fill="#e25f48" font-size="16" font-weight="800">放 06~11</text>
+            <text x="300" y="239" fill="#0f8f70" font-size="16" font-weight="800">充 11~14</text>
+            <text x="374" y="239" fill="#e25f48" font-size="16" font-weight="800">放 14~24</text>
+            <text x="60" y="180" fill="#10252c" font-size="18" font-weight="900">非夏月</text>
+            <g fill="#5e6f73" font-size="14">
+              <text x="55" y="315">00</text><text x="194" y="315">06</text><text x="290" y="315">11</text><text x="360" y="315">14</text><text x="432" y="315">16</text><text x="570" y="315">22</text><text x="612" y="315">24</text>
+            </g>
+          </svg>
+        </div>
+        <div class="panel">
+          <h3>採用電價</h3>
+          <div class="formula">夏月：離峰 2.53 元/kWh → 尖峰 9.39 元/kWh</div>
+          <div style="height:14px"></div>
+          <div class="formula">非夏月：離峰 2.32 元/kWh → 半尖峰 5.47 元/kWh</div>
+          <div style="height:20px"></div>
+          <p class="muted">收益計算採 AC-AC 往返效率 90%，可用放電容量採名目容量 80%。週六、週日及離峰日未納入主估算。</p>
+        </div>
+      </div>
+      <div class="footer"><span>電價數字依台電高壓三段式時間電價表與使用者提供截圖口徑。</span><span>6</span></div>
+    </section>
+
+    <section class="slide" data-title="套利收益">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Revenue Estimate</p>
+          <h2>3 cluster 主方案的平日價差套利毛收益約 43.1 萬元/年</h2>
+        </div>
+        <div class="meta">337.68 kWh 名目<br>270.14 kWh 可用/循環</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>公式</th>
+                <th>毛收益</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>夏月 1 充 1 放</td>
+                <td>270.14 × (9.39 - 2.53 ÷ 0.90) × 109 平日</td>
+                <td>193,720 元/年</td>
+              </tr>
+              <tr>
+                <td>非夏月 2 充 2 放</td>
+                <td>270.14 × (5.47 - 2.32 ÷ 0.90) × 2 × 152 平日</td>
+                <td>237,520 元/年</td>
+              </tr>
+              <tr>
+                <td><strong>價差套利合計</strong></td>
+                <td>夏月 + 非夏月</td>
+                <td><strong>431,240 元/年</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart" aria-label="價差套利收益柱狀圖">
+          <svg viewBox="0 0 540 340" role="img">
+            <title>年度價差套利收益</title>
+            <rect x="58" y="42" width="420" height="230" fill="#fff" stroke="#d8e0dc"/>
+            <line x1="58" y1="226" x2="478" y2="226" stroke="#d8e0dc"/>
+            <line x1="58" y1="180" x2="478" y2="180" stroke="#d8e0dc"/>
+            <line x1="58" y1="134" x2="478" y2="134" stroke="#d8e0dc"/>
+            <rect x="112" y="137" width="86" height="135" fill="#f2ab2e"/>
+            <rect x="252" y="107" width="86" height="165" fill="#0f8f70"/>
+            <rect x="392" y="42" width="86" height="230" fill="#e25f48"/>
+            <text x="110" y="306" fill="#5e6f73" font-size="15">夏月</text>
+            <text x="242" y="306" fill="#5e6f73" font-size="15">非夏月</text>
+            <text x="390" y="306" fill="#5e6f73" font-size="15">合計</text>
+            <text x="95" y="126" fill="#10252c" font-size="17" font-weight="800">19.4 萬</text>
+            <text x="235" y="96" fill="#10252c" font-size="17" font-weight="800">23.8 萬</text>
+            <text x="372" y="30" fill="#10252c" font-size="17" font-weight="800">43.1 萬</text>
+          </svg>
+        </div>
+      </div>
+      <div class="footer"><span>此為毛收益，不含電池衰退、待機耗電、PCS 損失差異、維運費與可用率折減。</span><span>7</span></div>
+    </section>
+
+    <section class="slide" data-title="效益堆疊">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Value Stack</p>
+          <h2>降契約容量是主要確定收益；套利是可調度的第二收益</h2>
+        </div>
+        <div class="meta">基本電費 + TOU<br>粗估毛效益</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>收益來源</th>
+                <th>估算方式</th>
+                <th>年化毛效益</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>基本電費節省</td>
+                <td>300 kW × (223.6 × 5 + 166.9 × 7)</td>
+                <td>685,890 元/年</td>
+              </tr>
+              <tr>
+                <td>尖離峰價差套利</td>
+                <td>3 cluster，平日循環，RTE 90%</td>
+                <td>431,240 元/年</td>
+              </tr>
+              <tr>
+                <td><strong>合計</strong></td>
+                <td>未扣 O&M、衰退、稅費與停機</td>
+                <td><strong>1,117,130 元/年</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="compact-grid">
+          <div class="metric green">
+            <div class="label">契約容量下降</div>
+            <div><span class="value">300</span><span class="unit"> kW</span></div>
+            <small>此收益成立前提：1,200 kW 可被 EMS 穩定守住。</small>
+          </div>
+          <div class="metric amber">
+            <div class="label">主方案套利可用容量</div>
+            <div><span class="value">270</span><span class="unit"> kWh</span></div>
+            <small>以 80% 可用放電容量估算，仍需保留事件管理 SOC。</small>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>若現場頻繁接近 1,200 kW，套利收益需按實際被 EMS 限制的比例折減。</span><span>8</span></div>
+    </section>
+
+    <section class="slide" data-title="方案敏感度">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Sensitivity</p>
+          <h2>容量每增加 1 組 cluster，價差套利約增加 14.4 萬元/年</h2>
+        </div>
+        <div class="meta">同一效率與<br>平日循環假設</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>容量方案</th>
+                <th>連續功率</th>
+                <th>可用放電/循環</th>
+                <th>套利毛收益</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2 cluster</td>
+                <td>112 kW</td>
+                <td>180.10 kWh</td>
+                <td>287,493 元/年</td>
+              </tr>
+              <tr>
+                <td><strong>3 cluster</strong></td>
+                <td><strong>168 kW</strong></td>
+                <td><strong>270.14 kWh</strong></td>
+                <td><strong>431,240 元/年</strong></td>
+              </tr>
+              <tr>
+                <td>4 cluster</td>
+                <td>224 kW</td>
+                <td>360.19 kWh</td>
+                <td>574,987 元/年</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>建議決策口徑</h3>
+          <ul class="list">
+            <li>若只管 60 kW：2 cluster 可行，但 120 kW 事件時風險偏高。</li>
+            <li>若要守 120 kW 並做每日循環：3 cluster 是合理起點。</li>
+            <li>若業主重視收益而非最低 CapEx：可把 4 cluster 納入報價比較。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>敏感度未含設備成本，需取得正式報價後計算 IRR、回收年限與等效循環成本。</span><span>9</span></div>
+    </section>
+
+    <section class="slide" data-title="審查要點">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Technical & Regulatory Review</p>
+          <h2>導入前要先把電費、保護、併網與法規邊界釐清</h2>
+        </div>
+        <div class="meta">BTM BESS<br>審查清單</div>
+      </div>
+      <div class="slide-body three-col">
+        <div class="panel">
+          <h3>電費與契約</h3>
+          <ul class="list">
+            <li>確認 1,500 kW 是經常契約、半尖峰契約或合計契約。</li>
+            <li>取得 12 個月 15 分鐘需量與電費單，檢查最高需量月份。</li>
+            <li>確認降低契約容量後的申請時程、恢復限制與超約附加費風險。</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>技術併接</h3>
+          <ul class="list">
+            <li>建議零逆送控制，除非另行申請售電或輔助服務。</li>
+            <li>檢查高壓盤、變壓器容量、CT/PT、保護協調與諧波。</li>
+            <li>EMS/SCADA 需與現場主表、PCS、消防與告警系統整合。</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>法規與商務</h3>
+          <ul class="list">
+            <li>本案單一 1,500 kW 電號通常非用電大戶門檻案，但仍需確認同法人電號合併認定。</li>
+            <li>若納入需量反應、輔助服務或微電網黑啟動，需另做併網與合約審查。</li>
+            <li>採購文件需明確定義容量、效率、可用率、保固、衰退與性能驗收。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>法規結論需以最新法規、台電審查意見與業主電號資料為準。</span><span>10</span></div>
+    </section>
+
+    <section class="slide" data-title="導入路線">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Implementation Plan</p>
+          <h2>建議用兩階段驗證，先確定 1,200 kW 可以守住，再做收益最佳化</h2>
+        </div>
+        <div class="meta">建議時程<br>6~10 週前期作業</div>
+      </div>
+      <div class="slide-body">
+        <div class="timeline">
+          <div class="step">
+            <div class="num">1</div>
+            <h3>資料盤點</h3>
+            <p>收集 AMI、電費單、單線圖、主變容量與生產排程。</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h3>模擬驗證</h3>
+            <p>用實際 15 分鐘資料回放 EMS，確認 1,200 kW 超約風險。</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h3>方案報價</h3>
+            <p>向 ATMOCE/系統商取得 3 與 4 cluster 報價及保固條款。</p>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <h3>細部設計</h3>
+            <p>完成併接點、保護協調、消防、通訊與零逆送策略。</p>
+          </div>
+          <div class="step">
+            <div class="num">5</div>
+            <h3>驗收上線</h3>
+            <p>做 15 分鐘需量控制測試，再向台電辦理契約容量調降。</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>關鍵決策：先選 3 cluster 主方案；若報價後回收年限可接受，再評估升級 4 cluster。</span><span>11</span></div>
+    </section>
+
+    <section class="slide" data-title="來源與假設">
+      <div class="slide-header">
+        <div>
+          <p class="eyebrow">Sources & Assumptions</p>
+          <h2>本簡報的計算口徑</h2>
+        </div>
+        <div class="meta">供內部決策<br>與供應商詢價使用</div>
+      </div>
+      <div class="slide-body two-col">
+        <div class="panel">
+          <h3>主要來源</h3>
+          <ul class="list">
+            <li>ATMOCE Business Owner：<a href="https://www.atmoce.com/en/businessowner">https://www.atmoce.com/en/businessowner</a></li>
+            <li>ATMOCE M-ELV BattBank：<a href="https://www.atmoce.com/en/battbank">https://www.atmoce.com/en/battbank</a></li>
+            <li>台電詳細電價表：<a href="https://www.taipower.com.tw/media/xtofy2yw/%E8%A9%B3%E7%B4%B0%E9%9B%BB%E5%83%B9%E8%A1%A8.pdf?mediaDL=true">高壓三段式時間電價 PDF</a></li>
+            <li>使用者提供之負載分類與當日 15 分鐘需量截圖。</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>計算假設</h3>
+          <ul class="list">
+            <li>夏月：5/16~10/15；以 2026 年平日 109 天估算。</li>
+            <li>非夏月：2026 年平日 152 天估算。</li>
+            <li>電池可用放電容量：名目容量 80%；AC-AC 往返效率：90%。</li>
+            <li>未納入設備成本、工程費、消防、維運、衰退、稅費、停機、週末與國定假日收益。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>正式投資決策需以供應商正式規格書、台電最新費率與現場工程圖說覆核。</span><span>12</span></div>
+    </section>
+  </main>
+
+  <div class="nav" aria-label="slide navigation">
+    <button id="prev" type="button" title="上一頁" aria-label="上一頁">‹</button>
+    <div class="counter" id="counter">1 / 12</div>
+    <button id="next" type="button" title="下一頁" aria-label="下一頁">›</button>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const counter = document.getElementById("counter");
+    const progress = document.getElementById("progress");
+    let index = 0;
+
+    function showSlide(nextIndex) {
+      index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      document.title = `${slides[index].dataset.title} | 達亞光電 BTM 儲能建議`;
+    }
+
+    prev.addEventListener("click", () => showSlide(index - 1));
+    next.addEventListener("click", () => showSlide(index + 1));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft" || event.key === "PageUp") showSlide(index - 1);
+      if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") showSlide(index + 1);
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>
